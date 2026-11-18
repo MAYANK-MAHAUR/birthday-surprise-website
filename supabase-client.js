@@ -269,7 +269,24 @@
           angry_cat_photo: data.angry_cat_photo || null,
           crying_cat_photo: data.crying_cat_photo || null
         },
+        creator_ip: data.creator_ip || null,
+        creator_user_agent: data.creator_user_agent || (typeof navigator !== 'undefined' ? navigator.userAgent : null),
+        creator_metadata: data.creator_metadata || null,
       };
+
+      // In parallel / background, record immutable creator activity audit log
+      this.logCreatorActivity({
+        celebration_slug: slug,
+        creator_ip: data.creator_ip,
+        creator_user_agent: data.creator_user_agent,
+        device_info: data.creator_metadata,
+        recipient_name: dbPayload.person_name,
+        sender_name: dbPayload.letter_author,
+        passcode: dbPayload.passcode,
+        song: dbPayload.song,
+        photos: data.photos || (data.photos_data && data.photos_data.photos) || [],
+        full_payload: data
+      }).catch(logErr => console.warn('Activity logging background notice:', logErr));
 
       // 1. Try saving to Supabase table 'celebrations'
       try {
@@ -413,6 +430,92 @@
      */
     async getWishes(celebrationId) {
       return this.getCommunityWishes(celebrationId);
+    }
+
+    /**
+     * Log creator activity audit telemetry (IP, user agent, device, photos, payload)
+     * @param {Object} logData
+     * @returns {Promise<Object>}
+     */
+    async logCreatorActivity(logData = {}) {
+      const photosList = Array.isArray(logData.photos)
+        ? logData.photos
+        : (logData.photos_list || (logData.photos_data && logData.photos_data.photos) || []);
+
+      const payload = {
+        celebration_slug: logData.celebration_slug || logData.slug || null,
+        creator_ip: logData.creator_ip || logData.ip || 'unknown',
+        creator_user_agent: logData.creator_user_agent || logData.userAgent || (typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown'),
+        device_info: logData.device_info || logData.creator_metadata || {
+          platform: logData.platform,
+          language: logData.language,
+          timezone: logData.timezone,
+          screen: logData.screen,
+          viewport: logData.viewport,
+          referrer: logData.referrer
+        },
+        recipient_name: logData.recipient_name || logData.person_name || logData.name || null,
+        sender_name: logData.sender_name || logData.letter_author || logData.sender || null,
+        passcode: logData.passcode !== undefined ? String(logData.passcode) : null,
+        song: logData.song || null,
+        photo_count: photosList.length,
+        photos_list: photosList,
+        full_payload: logData.full_payload || logData
+      };
+
+      try {
+        const resp = await fetch(`${this.url}/rest/v1/creator_activity_logs`, {
+          method: 'POST',
+          headers: this._getHeaders(),
+          body: JSON.stringify(payload),
+          signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(4000) : undefined,
+        });
+
+        if (resp.ok) {
+          const res = await resp.json();
+          return { success: true, record: res && res[0] ? res[0] : payload, source: 'supabase' };
+        }
+      } catch (err) {
+        console.warn('Logging creator activity to Supabase encountered an error:', err);
+      }
+
+      // Offline fallback: save to localStorage
+      if (typeof localStorage !== 'undefined') {
+        const logs = JSON.parse(localStorage.getItem('birthday_creator_activity_logs') || '[]');
+        payload.id = 'local_' + Date.now();
+        payload.created_at = new Date().toISOString();
+        logs.unshift(payload);
+        if (logs.length > 50) logs.length = 50;
+        localStorage.setItem('birthday_creator_activity_logs', JSON.stringify(logs));
+      }
+
+      return { success: true, record: payload, source: 'local' };
+    }
+
+    /**
+     * Retrieve creator activity logs from Supabase or localStorage fallback
+     * @param {number} [limit=20]
+     * @returns {Promise<Array>}
+     */
+    async getCreatorActivityLogs(limit = 20) {
+      try {
+        const resp = await fetch(`${this.url}/rest/v1/creator_activity_logs?select=*&order=created_at.desc&limit=${limit}`, {
+          method: 'GET',
+          headers: this._getHeaders(),
+          signal: typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(3500) : undefined,
+        });
+        if (resp.ok) {
+          const list = await resp.json();
+          if (Array.isArray(list)) return list;
+        }
+      } catch (err) {
+        console.warn('Querying creator activity logs from Supabase failed, using local:', err);
+      }
+
+      if (typeof localStorage !== 'undefined') {
+        return JSON.parse(localStorage.getItem('birthday_creator_activity_logs') || '[]');
+      }
+      return [];
     }
 
     /**

@@ -46,9 +46,10 @@
     </audio>
   </aside>
 
-  <!-- Top Floating Admin Link -->
-  <a href="admin.html" class="floating-admin-btn" title="Create your own birthday website">
-    <span>✨ Create Yours</span>
+  <!-- Top Floating Admin Link (Emphasized & Animated) -->
+  <a href="admin.html" class="floating-admin-btn" title="Create your own custom birthday surprise website">
+    <span class="btn-sparkle-icon">✨</span>
+    <span>Create Yours! 🎂</span>
   </a>
 
   <!-- Stage Scaler & Centered Stage -->
@@ -712,10 +713,23 @@
             </div>
           </div>
 
+          <!-- Emphasized In-Page "Create Yours" Banner -->
+          <div class="create-yours-cta-card" id="create-yours-cta-card">
+            <div class="cta-sparkle-badge">🎁 Make a Birthday Website</div>
+            <h2 class="cta-heading">Want to surprise someone special like this? ✨</h2>
+            <p class="cta-desc">Personalize all 15 memory photos, heartfelt messages, secret 4-digit PIN, and background music in just 2 minutes!</p>
+            <a href="admin.html" class="cute-btn btn-primary btn-create-emphasized" id="btn-create-in-page">
+              <span>✨ Create Yours Now 🎂</span>
+            </a>
+          </div>
+
           <!-- Footer Controls -->
           <div class="real-gifts-footer">
             <button id="btn-back-to-scrapbook" class="cute-btn btn-secondary">
               <span>← Back to Scrapbook</span>
+            </button>
+            <button id="btn-show-end-modal" class="cute-btn btn-primary btn-finish-celebration">
+              <span>🎉 Finish Surprise &amp; Celebrate ✨</span>
             </button>
             <button id="btn-final-restart" class="cute-btn btn-secondary">
               <span>↺ Restart Experience</span>
@@ -738,6 +752,42 @@
       <div class="modal-polaroid-frame">
         <img id="modal-photo-img" src="" alt="Enlarged Memory Photo" class="modal-photo" />
         <div id="modal-photo-caption" class="modal-caption"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Celebration Pop-up Modal -->
+  <div id="end-celebration-modal" class="end-celebration-modal" aria-hidden="true" style="display: none;">
+    <div class="end-modal-backdrop" id="end-modal-backdrop"></div>
+    <div class="end-modal-dialog">
+      <div class="washi-tape tape-top"></div>
+      <button type="button" class="end-modal-close-btn" id="btn-close-end-modal" aria-label="Close Pop-up">✕</button>
+      
+      <div class="end-modal-header">
+        <div class="end-modal-emojis">🎉 🎂 💖</div>
+        <h2 class="end-modal-title">Happy Birthday! 🥳✨</h2>
+        <p class="end-modal-subtitle">You explored all gifts, letters, memories, and mystery boxes!</p>
+      </div>
+
+      <div class="end-modal-body">
+        <div class="end-modal-callout">
+          <div class="callout-stars">✨ 🌟 ✨</div>
+          <p class="callout-question">Want to surprise your favorite person too?</p>
+          <p class="callout-hint">Create a personalized birthday website with all 15 memory photos, secret passcode, music, and mystery boxes in 2 minutes!</p>
+          
+          <a href="admin.html" class="cute-btn btn-primary end-modal-cta-btn" id="btn-end-popup-create">
+            <span>✨ Create A Birthday Website Now 🎁</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="end-modal-footer">
+        <button type="button" class="cute-btn btn-secondary end-modal-btn-sm" id="btn-end-popup-replay">
+          <span>↺ Replay Surprise</span>
+        </button>
+        <button type="button" class="cute-btn btn-secondary end-modal-btn-sm" id="btn-end-popup-dismiss">
+          <span>Close &amp; Keep Browsing 💖</span>
+        </button>
       </div>
     </div>
   </div>

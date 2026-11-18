@@ -577,6 +577,36 @@
     }, duration);
   }
 
+  // --- END CELEBRATION POP-UP MODAL ---
+  function showEndCelebrationModal() {
+    if (window.__disableEndPopup) return;
+    const modal = document.getElementById('end-celebration-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    // Force layout reflow
+    void modal.offsetWidth;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    state.endModalShown = true;
+
+    playSuccessChime();
+    if (window.confetti) {
+      window.confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+    }
+  }
+
+  function closeEndCelebrationModal() {
+    const modal = document.getElementById('end-celebration-modal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      if (!modal.classList.contains('active')) {
+        modal.style.display = 'none';
+      }
+    }, 350);
+  }
+
   // --- MYSTERY BOXES UNBOXING ---
   function openMysteryBox1() {
     if (state.box1Opened) return;
@@ -595,6 +625,10 @@
       }, 350);
     } else if (revealed) {
       revealed.style.display = 'block';
+    }
+
+    if (state.box1Opened && state.box2Opened && !state.endModalShown) {
+      setTimeout(showEndCelebrationModal, 2500);
     }
   }
 
@@ -615,6 +649,10 @@
       }, 350);
     } else if (revealed) {
       revealed.style.display = 'block';
+    }
+
+    if (state.box1Opened && state.box2Opened && !state.endModalShown) {
+      setTimeout(showEndCelebrationModal, 2500);
     }
   }
 
@@ -1366,6 +1404,28 @@
 
     document.getElementById('modal-close')?.addEventListener('click', closePhotoModal);
     document.getElementById('modal-backdrop')?.addEventListener('click', closePhotoModal);
+
+    // End Celebration Pop-up Modal triggers & actions
+    document.getElementById('btn-show-end-modal')?.addEventListener('click', showEndCelebrationModal);
+    document.getElementById('btn-close-end-modal')?.addEventListener('click', closeEndCelebrationModal);
+    document.getElementById('btn-end-popup-dismiss')?.addEventListener('click', closeEndCelebrationModal);
+    document.getElementById('end-modal-backdrop')?.addEventListener('click', closeEndCelebrationModal);
+
+    document.getElementById('btn-end-popup-replay')?.addEventListener('click', () => {
+      closeEndCelebrationModal();
+      state.enteredPasscode = '';
+      updatePinDisplay();
+      goToSlide('slide-passcode');
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('end-celebration-modal');
+        if (modal && modal.classList.contains('active')) {
+          closeEndCelebrationModal();
+        }
+      }
+    });
   });
 
   // Export Application Interface for Testing & Extensibility
@@ -1374,6 +1434,8 @@
     goToSlide,
     openMysteryBox1,
     openMysteryBox2,
+    showEndCelebrationModal,
+    closeEndCelebrationModal,
     handleWishSubmit,
     hydrateCelebrationData,
     applyCelebrationData,

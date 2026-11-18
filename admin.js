@@ -59,6 +59,59 @@ function generateSecureSlug(prefix = 'sec') {
 }
 
 /**
+ * Collect creator device, IP, and environment telemetry for creation auditing
+ * @returns {Promise<Object>}
+ */
+async function collectCreatorTelemetry() {
+  let ip = 'unknown';
+  try {
+    const ipPromise = (async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        if (res.ok) {
+          const d = await res.json();
+          if (d && d.ip) return String(d.ip).trim();
+        }
+      } catch (_) {}
+      try {
+        const res2 = await fetch('https://api64.ipify.org?format=json');
+        if (res2.ok) {
+          const d2 = await res2.json();
+          if (d2 && d2.ip) return String(d2.ip).trim();
+        }
+      } catch (_) {}
+      return 'unknown';
+    })();
+
+    const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('unknown'), 2500));
+    ip = await Promise.race([ipPromise, timeoutPromise]);
+  } catch (err) {
+    console.warn('Could not determine public IP (likely blocked or offline):', err);
+  }
+
+  const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent : 'unknown';
+  const language = (typeof navigator !== 'undefined' && (navigator.language || navigator.userLanguage)) ? (navigator.language || navigator.userLanguage) : 'unknown';
+  const platform = (typeof navigator !== 'undefined' && (navigator.platform || navigator.userAgentData?.platform)) ? (navigator.platform || navigator.userAgentData?.platform) : 'unknown';
+  const timezone = (typeof Intl !== 'undefined' && Intl.DateTimeFormat) ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'unknown';
+  const screen = (typeof window !== 'undefined' && window.screen) ? `${window.screen.width}x${window.screen.height} (ratio: ${window.devicePixelRatio || 1})` : 'unknown';
+  const viewport = (typeof window !== 'undefined') ? `${window.innerWidth}x${window.innerHeight}` : 'unknown';
+  const referrer = (typeof document !== 'undefined' && document.referrer) ? document.referrer : 'direct';
+  const timestamp = new Date().toISOString();
+
+  return {
+    ip,
+    userAgent,
+    language,
+    platform,
+    timezone,
+    screen,
+    viewport,
+    referrer,
+    timestamp
+  };
+}
+
+/**
  * Format celebration payload conforming to PostgreSQL public.celebrations schema
  * @param {Object} data
  * @param {Object} [options]
@@ -211,7 +264,10 @@ function formatCelebrationPayload(data, options = {}) {
       gmail: data.social_gmail || (data.socials && data.socials.gmail) || '',
       whatsapp: data.social_whatsapp || (data.socials && data.socials.whatsapp) || '',
       spotify: data.social_spotify || (data.socials && data.socials.spotify) || '',
-    }
+    },
+    creator_ip: data.creator_ip || (data.creator_metadata && data.creator_metadata.ip) || options.creator_ip || null,
+    creator_user_agent: data.creator_user_agent || (data.creator_metadata && data.creator_metadata.userAgent) || options.creator_user_agent || null,
+    creator_metadata: data.creator_metadata || options.creator_metadata || null,
   };
 }
 
@@ -693,9 +749,18 @@ if (typeof document !== 'undefined') {
         }
 
         if (statusMsg) {
-          statusMsg.textContent = 'Saving celebration to Supabase... ✨';
+          statusMsg.textContent = 'Saving celebration & logging audit data... ✨';
           statusMsg.className = 'admin-status-text status-loading';
           statusMsg.style.display = 'block';
+        }
+
+        // Collect creator IP & device environment telemetry
+        let telemetry = null;
+        try {
+          telemetry = await collectCreatorTelemetry();
+        } catch (teleErr) {
+          console.warn('Telemetry collection notice:', teleErr);
+          telemetry = { ip: 'unknown', userAgent: (typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown') };
         }
 
         // Song selection
@@ -785,7 +850,10 @@ if (typeof document !== 'undefined') {
             gmail,
             whatsapp
           },
-          useSecureSlug: isEncryptEnabled
+          useSecureSlug: isEncryptEnabled,
+          creator_ip: telemetry ? telemetry.ip : 'unknown',
+          creator_user_agent: telemetry ? telemetry.userAgent : (typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown'),
+          creator_metadata: telemetry
         };
 
         const celebrationPayload = formatCelebrationPayload(rawData, { useSecureSlug: isEncryptEnabled });
@@ -920,6 +988,7 @@ if (typeof module !== 'undefined' && module.exports) {
     buildShareUrl,
     buildEncryptedShareUrl,
     buildWhatsAppShareUrl,
+    collectCreatorTelemetry,
     CelebrationCrypto: CryptoUtil,
   };
 }
