@@ -1643,33 +1643,56 @@ html, body {
 /* ==========================================================================
    SLIDE 17: REAL GIFTS & MYSTERY BOXES
    ========================================================================== */
+#slide-real-gifts {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 16px 10px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+}
+
+#slide-real-gifts::-webkit-scrollbar {
+  width: 5px;
+}
+
+#slide-real-gifts::-webkit-scrollbar-thumb {
+  background: rgba(43, 87, 140, 0.25);
+  border-radius: 10px;
+}
+
 .real-gifts-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 5;
   width: 95%;
-  max-width: 1100px;
+  max-width: 900px;
+  margin: auto !important;
 }
 
 .real-gifts-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 .real-title {
-  font-size: 38px;
+  font-size: 26px;
   color: var(--blue-ink);
+  line-height: 1.2;
+  margin-bottom: 4px;
 }
 
 .real-sub {
-  font-size: 17px;
+  font-size: 13.5px;
   color: #3a5c88;
+  margin: 0;
 }
 
 .mystery-boxes-row {
   display: flex;
-  gap: 36px;
+  gap: 20px;
   width: 100%;
   justify-content: center;
 }
@@ -1677,17 +1700,17 @@ html, body {
 .mystery-box-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 28px;
+  border-radius: 22px;
   box-shadow: var(--shadow-card);
-  border: 4px solid #fff;
+  border: 3px solid #fff;
   width: 100%;
-  max-width: 520px;
-  min-height: 380px;
+  max-width: 460px;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 28px;
+  padding: 16px 20px;
   position: relative;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -1701,18 +1724,20 @@ html, body {
 }
 
 .box-visual:hover {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .mystery-box-svg {
   display: block;
-  margin: 0 auto 6px auto;
+  margin: 0 auto 4px auto;
+  width: 68px;
+  height: 68px;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
 }
 
 .box-visual:hover .mystery-box-svg {
-  transform: scale(1.1) translateY(-4px);
+  transform: scale(1.08) translateY(-3px);
 }
 
 .box-visual.unwrapping {
@@ -1726,7 +1751,7 @@ html, body {
 }
 
 .box-lid {
-  font-size: 48px;
+  font-size: 34px;
   animation: wiggle-lid 2s infinite ease-in-out;
 }
 
@@ -1739,23 +1764,23 @@ html, body {
 .box-body {
   background: linear-gradient(135deg, #4d8ad4, #2a66af);
   color: #fff;
-  padding: 24px 36px;
-  border-radius: 20px;
+  padding: 10px 24px;
+  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 10px 24px rgba(42, 102, 175, 0.35);
-  margin-top: -10px;
+  box-shadow: 0 6px 16px rgba(42, 102, 175, 0.3);
+  margin-top: -6px;
 }
 
 .box-number {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 800;
   display: block;
 }
 
 .box-instruction {
-  font-size: 15px;
-  opacity: 0.9;
-  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.92;
+  margin-top: 2px;
 }
 
 .box-revealed-content {
@@ -1769,40 +1794,40 @@ html, body {
 }
 
 .revealed-tag {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--pink-accent);
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .revealed-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   text-align: center;
   color: var(--blue-ink);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 /* Social Rows */
 .social-links-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .social-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background: #f7faff;
-  padding: 10px 14px;
-  border-radius: 14px;
+  padding: 6px 12px;
+  border-radius: 12px;
   border: 1px solid #e1edfc;
 }
 
 .social-icon {
-  font-size: 20px;
+  font-size: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1810,8 +1835,8 @@ html, body {
 }
 
 .social-icon-img {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
   object-fit: contain;
   vertical-align: middle;
@@ -1826,13 +1851,13 @@ html, body {
 }
 
 .social-platform {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   color: #7b97be;
 }
 
 .social-handle {
-  font-size: 13px;
+  font-size: 12px;
   color: #1a3458;
   white-space: nowrap;
   overflow: hidden;
@@ -1840,8 +1865,8 @@ html, body {
 }
 
 .copy-btn, .visit-btn {
-  padding: 6px 12px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 10px;
   border: none;
   font-size: 12px;
   font-weight: 600;
@@ -2133,8 +2158,16 @@ html, body {
 
 .real-gifts-footer {
   display: flex;
-  gap: 18px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.real-gifts-footer .cute-btn {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+  min-height: 38px;
 }
 
 /* ==========================================================================
@@ -2618,52 +2651,55 @@ html, body {
 
 /* In-Slide Create Yours CTA Card */
 .create-yours-cta-card {
-  margin-top: 28px;
-  margin-bottom: 16px;
+  margin-top: 10px;
+  margin-bottom: 8px;
   background: linear-gradient(135deg, #ffffff 0%, #f4f8fe 100%);
   border: 2px solid #c8dcf6;
-  border-radius: 20px;
-  padding: 24px 26px;
+  border-radius: 16px;
+  padding: 10px 18px;
   text-align: center;
-  box-shadow: 0 8px 22px rgba(22, 42, 70, 0.08);
+  box-shadow: 0 4px 14px rgba(22, 42, 70, 0.06);
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cta-sparkle-badge {
   display: inline-block;
   background: #e1edfc;
   color: #2b578c;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 2px 10px;
   border-radius: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
 }
 
 .cta-heading {
   font-family: 'Fredoka', sans-serif;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 700;
   color: #1a3356;
-  margin-bottom: 6px;
+  margin: 2px 0;
 }
 
 .cta-desc {
-  font-size: 14px;
+  font-size: 11.5px;
   color: #6a8bb5;
-  max-width: 480px;
-  margin: 0 auto 16px auto;
-  line-height: 1.45;
+  max-width: 440px;
+  margin: 0 auto 6px auto;
+  line-height: 1.35;
 }
 
 .btn-create-emphasized {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  font-size: 15px;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 12.5px;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 6px 18px rgba(59, 116, 180, 0.28);
+  box-shadow: 0 4px 12px rgba(59, 116, 180, 0.22);
 }
 
 .btn-finish-celebration {
