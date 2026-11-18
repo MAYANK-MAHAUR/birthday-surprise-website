@@ -78,12 +78,9 @@ export async function runTier4Tests({ baseUrl, cdp }) {
       await cdp.waitForSelector('#slide-real-gifts.active', { timeoutMs: 5000 });
       await new Promise(r => setTimeout(r, 600));
 
-      // 10. Unwrap Box 1 & Box 2
+      // 10. Unwrap Single Mystery Surprise Box
       await cdp.click('#box-1-visual');
       await cdp.waitForFunction(() => window.getComputedStyle(document.getElementById('box-1-revealed')).display !== 'none');
-
-      await cdp.click('#box-2-visual');
-      await cdp.waitForFunction(() => window.getComputedStyle(document.getElementById('box-2-revealed')).display !== 'none');
 
       // Final checks
       const errors = cdp.getPageErrors();

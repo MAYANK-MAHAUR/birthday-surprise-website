@@ -214,23 +214,18 @@ async function main() {
       assert.ok(closedState, 'Modal must be dismissed when close button clicked');
     });
 
-    // 3.3 Automated Trigger on Unboxing Both Mystery Boxes
-    await runAsyncTest('TC-POPUP-02: Opening both Mystery Box 1 and Box 2 triggers the celebration pop-up', async () => {
+    // 3.3 Automated Trigger on Unboxing Mystery Surprise Box
+    await runAsyncTest('TC-POPUP-02: Opening the Mystery Box surprise triggers the celebration pop-up', async () => {
       await cdp.evaluate(() => {
         // Reset modal state
         window.BirthdayApp.state.box1Opened = false;
-        window.BirthdayApp.state.box2Opened = false;
         window.BirthdayApp.state.endModalShown = false;
         const m = document.getElementById('end-celebration-modal');
         if (m) { m.classList.remove('active'); m.style.display = 'none'; }
       });
 
-      // Unwrap Box 1
+      // Unwrap Single Mystery Surprise Box
       await cdp.click('#box-1-visual');
-      await new Promise(r => setTimeout(r, 400));
-
-      // Unwrap Box 2
-      await cdp.click('#box-2-visual');
       
       // Wait for automated timer (2.5s delay + reflow)
       await new Promise(r => setTimeout(r, 2900));
@@ -240,7 +235,7 @@ async function main() {
         return m && m.classList.contains('active');
       });
 
-      assert.ok(modalActive, 'End celebration pop-up must automatically trigger after opening both mystery boxes');
+      assert.ok(modalActive, 'End celebration pop-up must automatically trigger after opening the mystery surprise box');
     });
 
   } finally {

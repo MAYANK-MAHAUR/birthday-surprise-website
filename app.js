@@ -627,7 +627,7 @@
       revealed.style.display = 'block';
     }
 
-    if (state.box1Opened && state.box2Opened && !state.endModalShown) {
+    if (!state.endModalShown) {
       setTimeout(showEndCelebrationModal, 2500);
     }
   }
@@ -651,7 +651,7 @@
       revealed.style.display = 'block';
     }
 
-    if (state.box1Opened && state.box2Opened && !state.endModalShown) {
+    if (!state.endModalShown) {
       setTimeout(showEndCelebrationModal, 2500);
     }
   }

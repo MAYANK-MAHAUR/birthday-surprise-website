@@ -87,20 +87,9 @@ async function main() {
       'mystery-box-1',
       'box-1-visual',
       'box-1-revealed',
-      'mystery-box-2',
-      'box-2-visual',
-      'box-2-revealed',
-      'wishes-feed',
-      'wish-prompt-section',
-      'btn-wish-yes',
-      'btn-wish-no',
-      'wish-form',
-      'wish-input-name',
-      'wish-input-bday',
-      'wish-input-text',
-      'wish-input-photo',
-      'btn-submit-wish',
-      'toast-container'
+      'toast-container',
+      'end-celebration-modal',
+      'btn-create-in-page'
     ];
 
     for (const id of required) {
@@ -401,105 +390,51 @@ async function main() {
     });
 
     // --------------------------------------------------------------------
-    // SUITE 4: MYSTERY BOX 2 (WISHES BOARD, FORM & PHOTO UPLOAD)
+    // SUITE 4: SINGLE MYSTERY SURPRISE (WISHES BOARD REMOVED PER SPEC)
     // --------------------------------------------------------------------
-    console.log('\n▶ Suite 4: Mystery Box 2 (Screen 13 Wishes Board & Photo Upload)');
+    console.log('\n▶ Suite 4: Single Mystery Surprise (Wishes Board Removed per Spec)');
 
-    await runTest('TC-M4-BX2-01: Mystery Box 2 Initial State (Lid Visible, Content Hidden)', async () => {
+    await runTest('TC-M4-BX2-01: Single Surprise Layout Contract (Wishes Board absent, Box 1 is sole surprise)', async () => {
       const state = await cdp.evaluate(() => {
-        const visual = document.getElementById('box-2-visual');
-        const revealed = document.getElementById('box-2-revealed');
+        const box2 = document.getElementById('mystery-box-2');
+        const feed = document.getElementById('wishes-feed');
+        const box1 = document.getElementById('mystery-box-1');
         return {
-          visualDisplay: window.getComputedStyle(visual).display,
-          revealedDisplay: window.getComputedStyle(revealed).display
+          hasBox2: !!box2,
+          hasFeed: !!feed,
+          hasBox1: !!box1
         };
       });
 
-      assert.notEqual(state.visualDisplay, 'none', 'Box 2 visual should be visible initially');
-      assert.equal(state.revealedDisplay, 'none', 'Box 2 revealed should be hidden initially');
+      assert.equal(state.hasBox2, false, 'Mystery Box 2 must be completely removed');
+      assert.equal(state.hasFeed, false, 'Wishes feed must be completely removed');
+      assert.equal(state.hasBox1, true, 'Mystery Box 1 should be the sole surprise');
     });
 
-    await runTest('TC-M4-BX2-02: Unwrap Mystery Box 2 Renders Wishes Feed with Photo Thumbnails', async () => {
-      await cdp.click('#box-2-visual');
-      await cdp.waitForFunction(() => {
-        const revealed = document.getElementById('box-2-revealed');
-        return revealed && window.getComputedStyle(revealed).display !== 'none';
-      }, { timeoutMs: 5000 });
-
-      const feedData = await cdp.evaluate(() => {
-        const items = document.querySelectorAll('#wishes-feed .wish-item');
-        const photos = document.querySelectorAll('#wishes-feed .wish-thumb');
-        const names = Array.from(document.querySelectorAll('#wishes-feed .wisher-name')).map(el => el.textContent.trim());
-        const bdays = Array.from(document.querySelectorAll('#wishes-feed .wisher-bday')).map(el => el.textContent.trim());
-        return {
-          count: items.length,
-          photoCount: photos.length,
-          names,
-          bdays
-        };
+    await runTest('TC-M4-BX2-02: Mystery Surprise Box 1 Centered with Generous Responsive Styling', async () => {
+      const isCentered = await cdp.evaluate(() => {
+        const row = document.querySelector('.mystery-boxes-row');
+        const box1 = document.getElementById('mystery-box-1');
+        const style = window.getComputedStyle(row);
+        const boxStyle = window.getComputedStyle(box1);
+        return style.justifyContent.includes('center') && parseFloat(boxStyle.maxWidth) >= 460;
       });
 
-      assert.ok(feedData.count >= 2, `Wishes feed should contain at least 2 wishes, got: ${feedData.count}`);
-      assert.ok(feedData.photoCount >= 1, `Feed should render photo thumbnails, found: ${feedData.photoCount}`);
-      assert.ok(feedData.bdays[0].includes('🎂'), 'Birth date formatted with cake emoji');
+      assert.ok(isCentered, 'Single surprise box must be centered with modern card styling');
     });
 
-    await runTest('TC-M4-BX2-03: Interactive Prompt YES Displays Live Form with Date & Photo Input', async () => {
-      await cdp.waitForSelector('#btn-wish-yes');
-      await cdp.click('#btn-wish-yes');
-      await cdp.waitForSelector('#wish-form');
-
-      const formElements = await cdp.evaluate(() => {
-        const form = document.getElementById('wish-form');
-        const nameInput = document.getElementById('wish-input-name');
-        const bdayInput = document.getElementById('wish-input-bday');
-        const textInput = document.getElementById('wish-input-text');
-        const photoInput = document.getElementById('wish-input-photo');
-        const submitBtn = document.getElementById('btn-submit-wish');
-        return {
-          formVisible: window.getComputedStyle(form).display !== 'none',
-          hasName: !!nameInput && nameInput.required,
-          hasBday: !!bdayInput && bdayInput.type === 'date',
-          hasText: !!textInput && textInput.required,
-          hasPhoto: !!photoInput && photoInput.getAttribute('accept')?.includes('image'),
-          hasSubmit: !!submitBtn
-        };
-      });
-
-      assert.equal(formElements.formVisible, true, 'Wish submission form should be visible');
-      assert.equal(formElements.hasName, true, 'Name input present and required');
-      assert.equal(formElements.hasBday, true, 'Birth date input of type date present');
-      assert.equal(formElements.hasText, true, 'Wish message textarea present and required');
-      assert.equal(formElements.hasPhoto, true, 'Photo upload input with accept="image/*" present');
-      assert.equal(formElements.hasSubmit, true, 'Submit button present');
+    await runTest('TC-M4-BX2-03: Subtitle reflects single surprise specification', async () => {
+      const subText = await cdp.getText('.real-sub');
+      assert.ok(subText.includes('surprise') || subText.includes('secret'), `Subtitle should highlight single surprise: "${subText}"`);
     });
 
-    await runTest('TC-M4-BX2-04: Optimistic Wish Submission Immediately Prepends Card to Feed', async () => {
-      const initialCount = await cdp.evaluate(() => {
-        return document.querySelectorAll('#wishes-feed .wish-item').length;
+    await runTest('TC-M4-BX2-04: Opening Mystery Surprise Prepares Celebratory End Pop-Up Modal', async () => {
+      const modalExists = await cdp.evaluate(() => {
+        const modal = document.getElementById('end-celebration-modal');
+        return !!modal;
       });
 
-      await cdp.setInputValue('#wish-input-name', 'Devika Sen');
-      await cdp.setInputValue('#wish-input-bday', '1996-07-22');
-      await cdp.setInputValue('#wish-input-text', 'Wishing you endless joy, bright dreams, and the happiest birthday ever! 💖✨');
-
-      await cdp.click('#btn-submit-wish');
-      await new Promise(r => setTimeout(r, 400));
-
-      const updated = await cdp.evaluate(() => {
-        const items = document.querySelectorAll('#wishes-feed .wish-item');
-        const topWish = items[0] ? items[0].textContent : '';
-        const statusEl = document.getElementById('wish-form-status');
-        return {
-          newCount: items.length,
-          topWish,
-          statusText: statusEl ? statusEl.textContent : ''
-        };
-      });
-
-      assert.equal(updated.newCount, initialCount + 1, 'Feed count should immediately increment by 1');
-      assert.ok(updated.topWish.includes('Devika Sen'), `Top wish should contain Devika Sen, got: "${updated.topWish}"`);
-      assert.ok(updated.statusText.includes('Wish added'), `Status should confirm wish added, got: "${updated.statusText}"`);
+      assert.equal(modalExists, true, 'End celebration pop-up modal must exist for surprise climax');
     });
 
     // --------------------------------------------------------------------

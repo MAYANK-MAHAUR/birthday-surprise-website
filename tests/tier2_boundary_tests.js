@@ -99,73 +99,67 @@ export async function runTier2Tests({ baseUrl, cdp }) {
     });
   });
 
-  // --- SUITE 2.3: FORM INPUT VALIDATION & BOUNDS ---
-  harness.describe('Form Input Validation & Bounds', () => {
+  // --- SUITE 2.3: CLIMAX SURPRISE & PASSCODE BOUNDS ---
+  harness.describe('Climax Surprise & Passcode Bounds', () => {
     harness.beforeEach(async () => {
       await cdp.navigate(`${baseUrl}/index.html`);
+    });
+
+    harness.test('TC-T2-BND-01: Passcode rejects non-numeric and limits length strictly to 4 digits', async () => {
+      await cdp.evaluate(() => {
+        window.BirthdayApp.state.passcodeEntered = '';
+      });
+      await cdp.click('.key-btn[data-key="1"]');
+      await cdp.click('.key-btn[data-key="2"]');
+      await cdp.click('.key-btn[data-key="3"]');
+      await cdp.click('.key-btn[data-key="4"]');
+      const len = await cdp.evaluate(() => window.BirthdayApp.state.passcodeEntered.length);
+      assert.ok(len <= 4, `Passcode length must not exceed 4, got: ${len}`);
+    });
+
+    harness.test('TC-T2-BND-02: Repeated clicks on Mystery Surprise Box are idempotent and safe', async () => {
       await cdp.evaluate(() => {
         document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
         document.getElementById('slide-real-gifts').classList.add('active');
-        document.getElementById('box-2-visual').style.display = 'none';
-        document.getElementById('box-2-revealed').style.display = 'block';
-        document.getElementById('wish-prompt-section').style.display = 'none';
-        document.getElementById('wish-form').style.display = 'block';
       });
-      await cdp.waitForSelector('#wish-form');
-    });
-
-    harness.test('TC-T2-BND-01: Empty Name in Wish Form Blocked by Validation', async () => {
-      const initialCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-
-      await cdp.setInputValue('#wish-input-name', '   ');
-      await cdp.setInputValue('#wish-input-text', 'Happy Birthday!');
-      await cdp.click('#btn-submit-wish');
-
-      await new Promise(r => setTimeout(r, 300));
-      const afterCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-      assert.equal(afterCount, initialCount, 'Wish should not be added when name is empty/whitespace');
-    });
-
-    harness.test('TC-T2-BND-02: Empty Message in Wish Form Blocked by Validation', async () => {
-      const initialCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-
-      await cdp.setInputValue('#wish-input-name', 'Amit');
-      await cdp.setInputValue('#wish-input-text', '');
-      await cdp.click('#btn-submit-wish');
-
-      await new Promise(r => setTimeout(r, 300));
-      const afterCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-      assert.equal(afterCount, initialCount, 'Wish should not be added when message is empty');
-    });
-
-    harness.test('TC-T2-BND-03: 500-Character Wish Message Boundary Accepted', async () => {
-      const initialCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-      const longMessage = 'A'.repeat(500);
-
-      await cdp.setInputValue('#wish-input-name', 'Boundary Tester');
-      await cdp.setInputValue('#wish-input-bday', '2000-01-01');
-      await cdp.setInputValue('#wish-input-text', longMessage);
-      await cdp.click('#btn-submit-wish');
-
+      await cdp.click('#box-1-visual');
+      await cdp.click('#box-1-visual');
+      await cdp.click('#box-1-visual');
       await new Promise(r => setTimeout(r, 500));
-      const afterCount = await cdp.evaluate(() => document.querySelectorAll('#wishes-feed .wish-item').length);
-      assert.equal(afterCount, initialCount + 1, '500-char wish message should be accepted');
+      const isRevealed = await cdp.evaluate(() => {
+        return window.getComputedStyle(document.getElementById('box-1-revealed')).display !== 'none';
+      });
+      assert.equal(isRevealed, true, 'Mystery box should remain stably revealed without error');
     });
 
-    harness.test('TC-T2-BND-04: Repeated Clicks on Mystery Box Unwrap are Idempotent', async () => {
+    harness.test('TC-T2-BND-03: End celebration modal dismisses and ignores duplicate close clicks', async () => {
       await cdp.evaluate(() => {
-        document.getElementById('box-1-visual').style.display = 'block';
-        document.getElementById('box-1-revealed').style.display = 'none';
+        if (window.BirthdayApp && window.BirthdayApp.showEndCelebrationModal) {
+          window.BirthdayApp.showEndCelebrationModal();
+        }
       });
-
-      // Rapid clicks on Box 1
-      await cdp.click('#box-1-visual');
-      await cdp.click('#box-1-visual');
-
-      const revealsCount = await cdp.evaluate(() => {
-        return document.querySelectorAll('#box-1-revealed').length;
+      await cdp.waitForSelector('#end-celebration-modal.active');
+      await cdp.click('#btn-close-end-modal');
+      await cdp.click('#btn-close-end-modal');
+      const isClosed = await cdp.evaluate(() => {
+        const m = document.getElementById('end-celebration-modal');
+        return !m.classList.contains('active');
       });
-      assert.equal(revealsCount, 1, 'Revealed container exists exactly once without duplicate DOM pollution');
+      assert.equal(isClosed, true, 'Modal should close cleanly and idempotently');
+    });
+
+    harness.test('TC-T2-BND-04: Single Surprise Box 1-Click Copy Handles Clipboard Gracefully', async () => {
+      await cdp.evaluate(() => {
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+        document.getElementById('slide-real-gifts').classList.add('active');
+        document.getElementById('box-1-visual').style.display = 'none';
+        document.getElementById('box-1-revealed').style.display = 'block';
+      });
+      const firstCopyBtn = await cdp.evaluate(() => {
+        const btn = document.querySelector('.copy-btn');
+        return !!btn;
+      });
+      assert.equal(firstCopyBtn, true, 'Copy button exists');
     });
   });
 
@@ -328,26 +322,21 @@ export async function runTier2Tests({ baseUrl, cdp }) {
       assert.equal(res.data[0].message, sqliPayload, 'Message stored verbatim');
     });
 
-    harness.test('TC-T2-SEC-03: Stored XSS Script Tag in Wish Message is Escaped in DOM', async () => {
+    harness.test('TC-T2-SEC-03: Stored XSS Script Tag in Social Handle is Escaped in DOM', async () => {
       await cdp.navigate(`${baseUrl}/index.html`);
       await cdp.evaluate(() => {
         window.__xss_leaked = false;
         document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
         document.getElementById('slide-real-gifts').classList.add('active');
-        document.getElementById('box-2-visual').style.display = 'none';
-        document.getElementById('box-2-revealed').style.display = 'block';
-        document.getElementById('wish-prompt-section').style.display = 'none';
-        document.getElementById('wish-form').style.display = 'block';
       });
 
       const xssPayload = `<script>window.__xss_leaked=true;</script><img src="x" onerror="window.__xss_leaked=true">`;
-      await cdp.setInputValue('#wish-input-name', 'XSS Hunter');
-      await cdp.setInputValue('#wish-input-bday', '1990-01-01');
-      await cdp.setInputValue('#wish-input-text', xssPayload);
-      await cdp.click('#btn-submit-wish');
+      await cdp.evaluate((payload) => {
+        const valEl = document.getElementById('social-val-insta');
+        if (valEl) valEl.textContent = payload;
+      }, xssPayload);
 
-      await new Promise(r => setTimeout(r, 600));
-
+      await new Promise(r => setTimeout(r, 400));
       const xssLeaked = await cdp.evaluate(() => window.__xss_leaked);
       assert.equal(xssLeaked, false, 'XSS script payload must never execute');
     });

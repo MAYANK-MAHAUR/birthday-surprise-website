@@ -581,19 +581,19 @@
         <div class="real-gifts-stage">
           <div class="real-gifts-header">
             <h1 class="slide-title real-title">Okay, jokes aside... this is your REAL gift! 💝</h1>
-            <p class="real-sub">Open the two mystery boxes below one-by-one!</p>
+            <p class="real-sub">Open your secret mystery surprise below! 🎁</p>
           </div>
 
           <div class="mystery-boxes-row">
-            <!-- Mystery Box 1: Social Profiles -->
+            <!-- Mystery Surprise Box: Social Profiles -->
             <div class="mystery-box-card" id="mystery-box-1">
               <div class="box-visual" id="box-1-visual">
-                <img src="assets/images/mystery-box-1.svg" alt="Mystery Box 1" class="mystery-box-svg" width="96" height="96" />
+                <img src="assets/images/mystery-box-1.svg" alt="Mystery Box" class="mystery-box-svg" width="96" height="96" />
                 <div class="box-lid">
                   <div class="box-ribbon-bow">🎀</div>
                 </div>
                 <div class="box-body">
-                  <span class="box-number">Box 1</span>
+                  <span class="box-number">Special Surprise 🎁</span>
                   <div class="box-instruction">Click to Unwrap 🎁</div>
                 </div>
               </div>
@@ -638,77 +638,6 @@
                     <a href="https://wa.me/" target="_blank" rel="noopener" class="visit-btn" id="social-link-wa">Chat</a>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Mystery Box 2: Wishes Board -->
-            <div class="mystery-box-card" id="mystery-box-2">
-              <div class="box-visual" id="box-2-visual">
-                <img src="assets/images/mystery-box-2.svg" alt="Mystery Box 2" class="mystery-box-svg" width="96" height="96" />
-                <div class="box-lid">
-                  <div class="box-ribbon-bow">🎁</div>
-                </div>
-                <div class="box-body">
-                  <span class="box-number">Box 2</span>
-                  <div class="box-instruction">Click to Unwrap 🌟</div>
-                </div>
-              </div>
-              <div class="box-revealed-content" id="box-2-revealed" style="display: none;">
-                <div class="revealed-tag">🎉 Unlocked: Birthday Love! 🎉</div>
-                <h3 class="revealed-title">Friends & Family Wishes Board</h3>
-                <div class="wishes-feed" id="wishes-feed">
-                  <!-- Dynamically populated from Supabase / localStorage -->
-                  <div class="wish-item">
-                    <div class="wish-header">
-                      <strong class="wisher-name">Aarav Sharma</strong>
-                      <span class="wisher-bday">🎂 Nov 20</span>
-                    </div>
-                    <p class="wish-message">"Happy Birthday bhai! May this year bring you crazy success, health, and happiness! Stay blessed always!"</p>
-                  </div>
-                  <div class="wish-item">
-                    <div class="wish-header">
-                      <strong class="wisher-name">Priya Patel</strong>
-                      <span class="wisher-bday">🎂 Apr 15</span>
-                    </div>
-                    <p class="wish-message">"Happiest birthday to the sweetest soul! Keep spreading your wonderful smile and positivity everywhere! ✨"</p>
-                  </div>
-                </div>
-
-                <!-- Add Your Name Prompt -->
-                <div class="add-wish-prompt" id="wish-prompt-section">
-                  <p class="prompt-text">Want your name on this board too? 💖</p>
-                  <div class="prompt-buttons">
-                    <button id="btn-wish-yes" class="cute-btn btn-yes-sm">YES! Add Me</button>
-                    <button id="btn-wish-no" class="cute-btn btn-no-sm">Just Reading</button>
-                  </div>
-                </div>
-
-                <!-- Wish Submission Form -->
-                <form id="wish-form" class="wish-form" style="display: none;">
-                  <div class="form-row">
-                    <input type="text" id="wish-input-name" placeholder="Your Name" required class="cute-input" maxlength="60" />
-                    <input type="date" id="wish-input-bday" title="Your Birthday Date" required class="cute-input" />
-                  </div>
-                  <textarea id="wish-input-text" placeholder="Write your heartfelt birthday wish here..." required class="cute-textarea" maxlength="500"></textarea>
-                  
-                  <!-- Optional Photo Upload with Preview -->
-                  <div class="wish-file-wrap">
-                    <label for="wish-input-photo" class="wish-file-label" id="wish-file-label">
-                      <span class="file-icon">📷</span>
-                      <span id="wish-photo-label-text">Attach cute photo (optional)</span>
-                    </label>
-                    <input type="file" id="wish-input-photo" accept="image/*" class="wish-file-input" />
-                    <div id="wish-photo-preview-wrap" class="wish-photo-preview-wrap" style="display: none;">
-                      <img id="wish-photo-preview-img" src="" alt="Wish Preview" class="wish-preview-thumb" />
-                      <button type="button" id="btn-remove-wish-photo" class="btn-remove-photo" title="Remove attached photo">✕</button>
-                    </div>
-                  </div>
-
-                  <button type="submit" id="btn-submit-wish" class="cute-btn btn-primary btn-submit">
-                    <span>Send Birthday Wish 💌</span>
-                  </button>
-                  <div id="wish-form-status" class="wish-form-status"></div>
-                </form>
               </div>
             </div>
           </div>

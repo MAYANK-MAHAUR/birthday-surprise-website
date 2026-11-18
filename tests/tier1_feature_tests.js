@@ -543,84 +543,67 @@ export async function runTier1Tests({ baseUrl, cdp }) {
       assert.ok(clipText.length > 0, 'Clipboard content should not be empty');
     });
 
-    harness.test('TC-T1-BOX-04: Mystery Box 2 Initial State (Lid Visible, Content Hidden)', async () => {
+    harness.test('TC-T1-BOX-04: Single Mystery Surprise Box is Visible Initially, Content Hidden', async () => {
       const state = await cdp.evaluate(() => {
-        const visual = document.getElementById('box-2-visual');
-        const revealed = document.getElementById('box-2-revealed');
+        const visual = document.getElementById('box-1-visual');
+        const revealed = document.getElementById('box-1-revealed');
         return {
           visualDisplay: window.getComputedStyle(visual).display,
           revealedDisplay: window.getComputedStyle(revealed).display
         };
       });
 
-      assert.notEqual(state.visualDisplay, 'none', 'Box 2 visual should be visible initially');
-      assert.equal(state.revealedDisplay, 'none', 'Box 2 revealed should be hidden initially');
+      assert.notEqual(state.visualDisplay, 'none', 'Box 1 visual should be visible initially');
+      assert.equal(state.revealedDisplay, 'none', 'Box 1 revealed should be hidden initially');
     });
 
-    harness.test('TC-T1-BOX-05: Mystery Box 2 Unwrap Renders Wishes Feed', async () => {
-      await cdp.click('#box-2-visual');
+    harness.test('TC-T1-BOX-05: Wishes Board is Completely Absent from Stage (Single Surprise Spec)', async () => {
+      const boardState = await cdp.evaluate(() => {
+        const box2 = document.getElementById('mystery-box-2');
+        const feed = document.getElementById('wishes-feed');
+        const form = document.getElementById('wish-form');
+        return {
+          hasBox2: !!box2,
+          hasFeed: !!feed,
+          hasForm: !!form
+        };
+      });
+
+      assert.equal(boardState.hasBox2, false, 'Mystery Box 2 should not exist');
+      assert.equal(boardState.hasFeed, false, 'Wishes feed should not exist');
+      assert.equal(boardState.hasForm, false, 'Wish form should not exist');
+    });
+
+    harness.test('TC-T1-BOX-06: Unwrapping Mystery Surprise Reveals Contacts & Socials', async () => {
+      await cdp.click('#box-1-visual');
       await cdp.waitForFunction(() => {
-        const revealed = document.getElementById('box-2-revealed');
+        const revealed = document.getElementById('box-1-revealed');
         return window.getComputedStyle(revealed).display !== 'none';
       });
 
-      const wishCardsCount = await cdp.evaluate(() => {
-        return document.querySelectorAll('#wishes-feed .wish-item, #wishes-list .wish-item').length;
+      const socialRowsCount = await cdp.evaluate(() => {
+        return document.querySelectorAll('#box-1-revealed .social-row').length;
       });
-      assert.ok(wishCardsCount >= 1, `Wishes feed should contain at least 1 wish, got: ${wishCardsCount}`);
+      assert.ok(socialRowsCount >= 4, `Should reveal all 4 social rows, got: ${socialRowsCount}`);
     });
 
-    harness.test('TC-T1-BOX-06: Mystery Box 2 YES Prompt Displays Wish Submission Form', async () => {
-      await cdp.click('#box-2-visual');
-      await cdp.waitForSelector('#btn-wish-yes');
-
-      await cdp.click('#btn-wish-yes');
-      await cdp.waitForSelector('#wish-form');
-
-      const formVisible = await cdp.evaluate(() => {
-        const form = document.getElementById('wish-form');
-        return window.getComputedStyle(form).display !== 'none';
+    harness.test('TC-T1-BOX-07: Single Surprise Box Copy and Visit Buttons are Accessible', async () => {
+      const buttonsCount = await cdp.evaluate(() => {
+        const copyBtns = document.querySelectorAll('#box-1-revealed .copy-btn').length;
+        const visitBtns = document.querySelectorAll('#box-1-revealed .visit-btn').length;
+        return { copyBtns, visitBtns };
       });
-      assert.equal(formVisible, true, 'Wish submission form should be visible after clicking YES');
+
+      assert.equal(buttonsCount.copyBtns >= 4, true, 'All 4 copy buttons should be present');
+      assert.equal(buttonsCount.visitBtns >= 4, true, 'All 4 visit buttons should be present');
     });
 
-    harness.test('TC-T1-BOX-07: Mystery Box 2 NO Prompt Hides Prompt Courteously', async () => {
-      await cdp.click('#box-2-visual');
-      await cdp.waitForSelector('#btn-wish-no');
-
-      await cdp.click('#btn-wish-no');
-
-      const formHidden = await cdp.evaluate(() => {
-        const form = document.getElementById('wish-form');
-        return !form || window.getComputedStyle(form).display === 'none';
+    harness.test('TC-T1-BOX-08: Opening Single Mystery Surprise Triggers End Celebration Pop-up Modal', async () => {
+      const modalExists = await cdp.evaluate(() => {
+        const modal = document.getElementById('end-celebration-modal');
+        return !!modal;
       });
-      assert.equal(formHidden, true, 'Wish form should remain hidden when choosing NO');
-    });
-
-    harness.test('TC-T1-BOX-08: Submitting Valid Wish Appends to Feed Immediately', async () => {
-      await cdp.click('#box-2-visual');
-      await cdp.waitForSelector('#btn-wish-yes');
-      await cdp.click('#btn-wish-yes');
-      await cdp.waitForSelector('#wish-form');
-
-      const initialCount = await cdp.evaluate(() => {
-        return document.querySelectorAll('#wishes-feed .wish-item, #wishes-list .wish-item').length;
-      });
-
-      await cdp.setInputValue('#wish-input-name', 'Kavita Rao');
-      await cdp.setInputValue('#wish-input-bday', '1997-08-14');
-      await cdp.setInputValue('#wish-input-text', 'Happy Birthday! Wishing you endless smiles and sweet adventures! 🌟');
-
-      await cdp.click('#btn-submit-wish');
-      await new Promise(r => setTimeout(r, 600));
-
-      const newCount = await cdp.evaluate(() => {
-        return document.querySelectorAll('#wishes-feed .wish-item, #wishes-list .wish-item').length;
-      });
-      assert.equal(newCount, initialCount + 1, 'Wishes feed count should increment by 1');
-
-      const topWish = await cdp.getText('#wishes-feed .wish-item, #wishes-list .wish-item');
-      assert.ok(topWish.includes('Kavita Rao'), `Top wish should contain Kavita Rao, got: "${topWish}"`);
+      assert.equal(modalExists, true, 'End celebration modal should be available on single surprise climax');
     });
   });
 
