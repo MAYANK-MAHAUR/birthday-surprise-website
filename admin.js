@@ -82,12 +82,85 @@ function formatCelebrationPayload(data, options = {}) {
   if (song.includes('city_of_stars')) song = 'city_of_stars';
   else if (song.includes('haareya')) song = 'haareya';
 
-  const photos = Array.isArray(data.photos) ? data.photos : [
+  const photos = Array.isArray(data.photos) ? [...data.photos] : [
     data.cover_photo || '',
-    data.polaroid_1_photo || '',
-    data.polaroid_2_photo || '',
-    data.polaroid_3_photo || '',
+    data.polaroid_1_photo || data.spread_photo || '',
+    data.polaroid_2_photo || data.letter_photo || '',
+    data.polaroid_3_photo || data.scrapbook_photo_1 || '',
+    data.scrapbook_photo_2 || '',
+    data.flower_photo_1 || '',
+    data.flower_photo_2 || '',
+    data.flower_photo_3 || '',
+    data.cake_photo || '',
+    data.cake_celebrate_photo || '',
+    data.mascot_photo || '',
+    data.teddy_photo || '',
+    data.wrong_code_photo || '',
+    data.angry_cat_photo || '',
+    data.crying_cat_photo || '',
   ];
+
+  // If photos array was provided but had fewer than 15 items, fill from individual fields
+  while (photos.length < 15) {
+    const idx = photos.length;
+    if (idx === 1) photos.push(data.spread_photo || data.polaroid_1_photo || '');
+    else if (idx === 2) photos.push(data.letter_photo || data.polaroid_2_photo || '');
+    else if (idx === 3) photos.push(data.scrapbook_photo_1 || data.polaroid_3_photo || '');
+    else if (idx === 4) photos.push(data.scrapbook_photo_2 || '');
+    else if (idx === 5) photos.push(data.flower_photo_1 || '');
+    else if (idx === 6) photos.push(data.flower_photo_2 || '');
+    else if (idx === 7) photos.push(data.flower_photo_3 || '');
+    else if (idx === 8) photos.push(data.cake_photo || '');
+    else if (idx === 9) photos.push(data.cake_celebrate_photo || '');
+    else if (idx === 10) photos.push(data.mascot_photo || '');
+    else if (idx === 11) photos.push(data.teddy_photo || '');
+    else if (idx === 12) photos.push(data.wrong_code_photo || '');
+    else if (idx === 13) photos.push(data.angry_cat_photo || '');
+    else if (idx === 14) photos.push(data.crying_cat_photo || '');
+    else break;
+  }
+
+  const cover_photo = photos[0] || data.cover_photo || null;
+  const polaroid_1_photo = photos[1] || data.polaroid_1_photo || null;
+  const polaroid_2_photo = photos[2] || data.polaroid_2_photo || null;
+  const polaroid_3_photo = photos[3] || data.polaroid_3_photo || null;
+
+  const spread_photo = photos[1] || data.spread_photo || polaroid_1_photo;
+  const letter_photo = photos[2] || data.letter_photo || polaroid_2_photo;
+  const scrapbook_photo_1 = photos[3] || data.scrapbook_photo_1 || polaroid_3_photo;
+  const scrapbook_photo_2 = photos[4] || data.scrapbook_photo_2 || null;
+  const flower_photo_1 = photos[5] || data.flower_photo_1 || null;
+  const flower_photo_2 = photos[6] || data.flower_photo_2 || null;
+  const flower_photo_3 = photos[7] || data.flower_photo_3 || null;
+  const cake_photo = photos[8] || data.cake_photo || null;
+  const cake_celebrate_photo = photos[9] || data.cake_celebrate_photo || null;
+  const mascot_photo = photos[10] || data.mascot_photo || null;
+  const teddy_photo = photos[11] || data.teddy_photo || null;
+  const wrong_code_photo = photos[12] || data.wrong_code_photo || null;
+  const angry_cat_photo = photos[13] || data.angry_cat_photo || null;
+  const crying_cat_photo = photos[14] || data.crying_cat_photo || null;
+
+  const photos_data = {
+    photos,
+    cover_photo,
+    polaroid_1_photo,
+    polaroid_2_photo,
+    polaroid_3_photo,
+    spread_photo,
+    letter_photo,
+    scrapbook_photo_1,
+    scrapbook_photo_2,
+    flower_photo_1,
+    flower_photo_2,
+    flower_photo_3,
+    cake_photo,
+    cake_celebrate_photo,
+    mascot_photo,
+    teddy_photo,
+    wrong_code_photo,
+    angry_cat_photo,
+    crying_cat_photo,
+  };
 
   return {
     slug,
@@ -97,11 +170,26 @@ function formatCelebrationPayload(data, options = {}) {
     sender,
     passcode,
     song,
-    cover_photo: photos[0] || data.cover_photo || null,
-    polaroid_1_photo: photos[1] || data.polaroid_1_photo || null,
-    polaroid_2_photo: photos[2] || data.polaroid_2_photo || null,
-    polaroid_3_photo: photos[3] || data.polaroid_3_photo || null,
+    cover_photo,
+    polaroid_1_photo,
+    polaroid_2_photo,
+    polaroid_3_photo,
+    spread_photo,
+    letter_photo,
+    scrapbook_photo_1,
+    scrapbook_photo_2,
+    flower_photo_1,
+    flower_photo_2,
+    flower_photo_3,
+    cake_photo,
+    cake_celebrate_photo,
+    mascot_photo,
+    teddy_photo,
+    wrong_code_photo,
+    angry_cat_photo,
+    crying_cat_photo,
     photos,
+    photos_data,
     polaroid_note: data.polaroid_note || data.polaroidNote || 'Happy Birthday ❤️',
     polaroidNote: data.polaroid_note || data.polaroidNote || 'Happy Birthday ❤️',
     letter_text: data.letter_text || data.letter || '',
@@ -391,7 +479,7 @@ if (typeof document !== 'undefined') {
     }
 
     // ------------------------------------------------------------------------
-    // 3. PHOTO UPLOADS & LIVE PREVIEWS
+    // 3. PHOTO UPLOADS & LIVE PREVIEWS (ALL 15 CELEBRATION PHOTO SLOTS)
     // ------------------------------------------------------------------------
     const photoSlots = [
       {
@@ -399,6 +487,12 @@ if (typeof document !== 'undefined') {
         urlId: 'admin-photo-polaroid',
         previewId: 'preview-polaroid',
         badgeId: 'badge-polaroid'
+      },
+      {
+        fileId: 'admin-file-spread',
+        urlId: 'admin-photo-spread',
+        previewId: 'preview-spread',
+        badgeId: 'badge-spread'
       },
       {
         fileId: 'admin-file-letter',
@@ -417,6 +511,66 @@ if (typeof document !== 'undefined') {
         urlId: 'admin-photo-scrapbook-2',
         previewId: 'preview-scrapbook-2',
         badgeId: 'badge-scrapbook-2'
+      },
+      {
+        fileId: 'admin-file-flower-1',
+        urlId: 'admin-photo-flower-1',
+        previewId: 'preview-flower-1',
+        badgeId: 'badge-flower-1'
+      },
+      {
+        fileId: 'admin-file-flower-2',
+        urlId: 'admin-photo-flower-2',
+        previewId: 'preview-flower-2',
+        badgeId: 'badge-flower-2'
+      },
+      {
+        fileId: 'admin-file-flower-3',
+        urlId: 'admin-photo-flower-3',
+        previewId: 'preview-flower-3',
+        badgeId: 'badge-flower-3'
+      },
+      {
+        fileId: 'admin-file-cake',
+        urlId: 'admin-photo-cake',
+        previewId: 'preview-cake',
+        badgeId: 'badge-cake'
+      },
+      {
+        fileId: 'admin-file-cake-celebrate',
+        urlId: 'admin-photo-cake-celebrate',
+        previewId: 'preview-cake-celebrate',
+        badgeId: 'badge-cake-celebrate'
+      },
+      {
+        fileId: 'admin-file-mascot',
+        urlId: 'admin-photo-mascot',
+        previewId: 'preview-mascot',
+        badgeId: 'badge-mascot'
+      },
+      {
+        fileId: 'admin-file-teddy',
+        urlId: 'admin-photo-teddy',
+        previewId: 'preview-teddy',
+        badgeId: 'badge-teddy'
+      },
+      {
+        fileId: 'admin-file-wrong-code',
+        urlId: 'admin-photo-wrong-code',
+        previewId: 'preview-wrong-code',
+        badgeId: 'badge-wrong-code'
+      },
+      {
+        fileId: 'admin-file-angry-cat',
+        urlId: 'admin-photo-angry-cat',
+        previewId: 'preview-angry-cat',
+        badgeId: 'badge-angry-cat'
+      },
+      {
+        fileId: 'admin-file-crying-cat',
+        urlId: 'admin-photo-crying-cat',
+        previewId: 'preview-crying-cat',
+        badgeId: 'badge-crying-cat'
       }
     ];
 
@@ -552,9 +706,20 @@ if (typeof document !== 'undefined') {
         }
 
         const photoPolaroid = document.getElementById('admin-photo-polaroid')?.value.trim() || 'assets/images/8893d690706f9c045b2c6e478c07636c.jpg';
+        const photoSpread = document.getElementById('admin-photo-spread')?.value.trim() || 'assets/images/8f4399ac68b4198a5ef2dcbb0eec4224.jpg';
         const photoLetter = document.getElementById('admin-photo-letter')?.value.trim() || 'assets/images/2bd6fdb2b6bf296a351bf5c516e35238.jpg';
         const photoScrapbook1 = document.getElementById('admin-photo-scrapbook-1')?.value.trim() || 'assets/images/b0741a182561ced2d924951b42ac6dc6.jpg';
         const photoScrapbook2 = document.getElementById('admin-photo-scrapbook-2')?.value.trim() || 'assets/images/45aae7f5e21ba481cbe5a6bae512295a.jpg';
+        const photoFlower1 = document.getElementById('admin-photo-flower-1')?.value.trim() || 'assets/images/5087d25b38d46f06598fa2cf8e331598.jpg';
+        const photoFlower2 = document.getElementById('admin-photo-flower-2')?.value.trim() || 'assets/images/b2e0e4968c920cb3ff6b64472a80d770.jpg';
+        const photoFlower3 = document.getElementById('admin-photo-flower-3')?.value.trim() || 'assets/images/2d26fa6f4f5d96b95ccd30659d1fb414.jpg';
+        const photoCake = document.getElementById('admin-photo-cake')?.value.trim() || 'assets/images/09a443278b31bd865cae4542ae22295b.png';
+        const photoCakeCelebrate = document.getElementById('admin-photo-cake-celebrate')?.value.trim() || 'assets/images/b1dee7f2cea3aa95b9dc54d5a8ccc1fa.png';
+        const photoMascot = document.getElementById('admin-photo-mascot')?.value.trim() || 'assets/images/3a671a6dfc5faa2d87a4b208f50bb90a.png';
+        const photoTeddy = document.getElementById('admin-photo-teddy')?.value.trim() || 'assets/images/a5bdfde35d03ce2bd14f553ed2249355.png';
+        const photoWrongCode = document.getElementById('admin-photo-wrong-code')?.value.trim() || 'assets/images/d06c4a481034f2325da9010e7d6704fa.gif';
+        const photoAngryCat = document.getElementById('admin-photo-angry-cat')?.value.trim() || 'assets/images/bbd46bb7feaae5804098b672ba73435b.gif';
+        const photoCryingCat = document.getElementById('admin-photo-crying-cat')?.value.trim() || 'assets/images/0065f633b36ed9f79b6383af28e2926d.png';
 
         const polaroidNote = document.getElementById('admin-polaroid-note')?.value.trim() || 'Happy Birthday ❤️';
         const letter = document.getElementById('admin-letter-text')?.value.trim() || '';
@@ -570,6 +735,24 @@ if (typeof document !== 'undefined') {
         const isEncryptEnabled = document.getElementById('admin-encrypt-toggle')?.checked ?? true;
         const isPasscodeOnly = document.getElementById('admin-passcode-encrypt-toggle')?.checked ?? false;
 
+        const allPhotosList = [
+          photoPolaroid,
+          photoSpread,
+          photoLetter,
+          photoScrapbook1,
+          photoScrapbook2,
+          photoFlower1,
+          photoFlower2,
+          photoFlower3,
+          photoCake,
+          photoCakeCelebrate,
+          photoMascot,
+          photoTeddy,
+          photoWrongCode,
+          photoAngryCat,
+          photoCryingCat
+        ];
+
         const rawData = {
           name,
           sender,
@@ -580,7 +763,22 @@ if (typeof document !== 'undefined') {
           dedication,
           sticky1,
           sticky2,
-          photos: [photoPolaroid, photoLetter, photoScrapbook1, photoScrapbook2],
+          photos: allPhotosList,
+          cover_photo: photoPolaroid,
+          spread_photo: photoSpread,
+          letter_photo: photoLetter,
+          scrapbook_photo_1: photoScrapbook1,
+          scrapbook_photo_2: photoScrapbook2,
+          flower_photo_1: photoFlower1,
+          flower_photo_2: photoFlower2,
+          flower_photo_3: photoFlower3,
+          cake_photo: photoCake,
+          cake_celebrate_photo: photoCakeCelebrate,
+          mascot_photo: photoMascot,
+          teddy_photo: photoTeddy,
+          wrong_code_photo: photoWrongCode,
+          angry_cat_photo: photoAngryCat,
+          crying_cat_photo: photoCryingCat,
           socials: {
             instagram,
             snapchat,

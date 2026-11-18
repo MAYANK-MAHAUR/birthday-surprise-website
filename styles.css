@@ -1270,6 +1270,54 @@ html, body {
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
 }
 
+.letter-polaroid-frame {
+  float: right;
+  margin: 0 0 16px 20px;
+  width: 140px;
+  background: #ffffff;
+  padding: 8px 8px 18px 8px;
+  border-radius: 4px;
+  box-shadow: 0 8px 22px rgba(22, 42, 70, 0.18);
+  transform: rotate(3deg);
+  position: relative;
+  transition: transform 0.25s ease;
+  z-index: 2;
+}
+.letter-polaroid-frame:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+.letter-polaroid-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.memory-polaroid.right-polaroid {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 110px;
+  background: #ffffff;
+  padding: 6px 6px 14px 6px;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba(22, 42, 70, 0.18);
+  transform: rotate(4deg);
+  z-index: 4;
+  transition: transform 0.25s ease;
+}
+.memory-polaroid.right-polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+.memory-polaroid.right-polaroid .polaroid-photo {
+  width: 100%;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
 .letter-greeting {
   font-family: 'Playfair Display', serif;
   font-size: 26px;

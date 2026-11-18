@@ -252,6 +252,23 @@
         social_gmail: data.social_gmail || data.socials?.gmail || '',
         social_whatsapp: data.social_whatsapp || data.socials?.whatsapp || '',
         social_spotify: data.social_spotify || data.socials?.spotify || '',
+        photos_data: data.photos_data || {
+          photos: data.photos || [],
+          spread_photo: data.spread_photo || data.polaroid_1_photo || null,
+          letter_photo: data.letter_photo || data.polaroid_2_photo || null,
+          scrapbook_photo_1: data.scrapbook_photo_1 || data.polaroid_3_photo || null,
+          scrapbook_photo_2: data.scrapbook_photo_2 || null,
+          flower_photo_1: data.flower_photo_1 || null,
+          flower_photo_2: data.flower_photo_2 || null,
+          flower_photo_3: data.flower_photo_3 || null,
+          cake_photo: data.cake_photo || null,
+          cake_celebrate_photo: data.cake_celebrate_photo || null,
+          mascot_photo: data.mascot_photo || null,
+          teddy_photo: data.teddy_photo || null,
+          wrong_code_photo: data.wrong_code_photo || null,
+          angry_cat_photo: data.angry_cat_photo || null,
+          crying_cat_photo: data.crying_cat_photo || null
+        },
       };
 
       // 1. Try saving to Supabase table 'celebrations'
@@ -336,6 +353,12 @@
         c.polaroid_2_photo || '',
         c.polaroid_3_photo || '',
       ];
+      if (c.photos_data && typeof c.photos_data === 'object') {
+        if (Array.isArray(c.photos_data.photos) && c.photos_data.photos.length > 0) {
+          c.photos = c.photos_data.photos;
+        }
+        Object.assign(c, c.photos_data);
+      }
     }
 
     /**

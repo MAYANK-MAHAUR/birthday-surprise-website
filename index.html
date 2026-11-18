@@ -132,7 +132,7 @@
         
         <div class="content-box">
           <div class="cat-gif-frame">
-            <img src="assets/images/d06c4a481034f2325da9010e7d6704fa.gif" alt="Wrong Passcode Cat" class="animated-gif" />
+            <img id="wrong-code-img" src="assets/images/d06c4a481034f2325da9010e7d6704fa.gif" alt="Wrong Passcode Cat" class="animated-gif" />
           </div>
           <h1 class="slide-title title-danger">Wrong Passcode !! 🙈</h1>
           <p class="slide-sub">Oopsie! That's not the secret birthday code!</p>
@@ -151,7 +151,7 @@
         
         <div class="content-box">
           <div class="mascot-frame">
-            <img src="assets/images/3a671a6dfc5faa2d87a4b208f50bb90a.png" alt="Cute Bear" class="mascot-img pulse-anim" />
+            <img id="mascot-img" src="assets/images/3a671a6dfc5faa2d87a4b208f50bb90a.png" alt="Cute Bear" class="mascot-img pulse-anim" />
           </div>
           <h1 class="slide-title">Wanna see your surprise? 🎁✨</h1>
           <div class="btn-group">
@@ -174,7 +174,7 @@
         
         <div class="content-box">
           <div class="cat-gif-frame">
-            <img src="assets/images/bbd46bb7feaae5804098b672ba73435b.gif" alt="Angry Kitty" class="animated-gif" />
+            <img id="angry-cat-img" src="assets/images/bbd46bb7feaae5804098b672ba73435b.gif" alt="Angry Kitty" class="animated-gif" />
           </div>
           <h1 class="slide-title title-shake">How dare you click NO ! 😾</h1>
           <p class="slide-sub">You don't get to say no on your birthday! Try again!</p>
@@ -324,7 +324,7 @@
           <div class="celebration-badge">🎉 WISH GRANTED! 🎉</div>
           <h1 class="slide-title celebration-title">Yay!! Happy Birthdayyy! 🥳💖</h1>
           <div class="cake-celebrate-wrap">
-            <img src="assets/images/b1dee7f2cea3aa95b9dc54d5a8ccc1fa.png" alt="Blown Out Cake" class="cake-blown-img" />
+            <img id="cake-celebrate-img" src="assets/images/b1dee7f2cea3aa95b9dc54d5a8ccc1fa.png" alt="Blown Out Cake" class="cake-blown-img" />
           </div>
           <p class="slide-sub">May all your sweetest dreams and secret wishes come true!</p>
           <button id="btn-to-accept-gifts" class="cute-btn btn-primary btn-bounce">
@@ -342,7 +342,7 @@
 
         <div class="content-box">
           <div class="teddy-frame">
-            <img src="assets/images/a5bdfde35d03ce2bd14f553ed2249355.png" alt="Cute Teddy" class="teddy-img pulse-anim" />
+            <img id="teddy-img" src="assets/images/a5bdfde35d03ce2bd14f553ed2249355.png" alt="Cute Teddy" class="teddy-img pulse-anim" />
           </div>
           <h1 class="slide-title">Accept your gifts? 💝</h1>
           <div class="btn-group">
@@ -369,7 +369,7 @@
 
         <div class="content-box">
           <div class="crying-cat-frame">
-            <img src="assets/images/0065f633b36ed9f79b6383af28e2926d.png" alt="Crying Cat" class="crying-cat-img" />
+            <img id="crying-cat-img" src="assets/images/0065f633b36ed9f79b6383af28e2926d.png" alt="Crying Cat" class="crying-cat-img" />
           </div>
           <h1 class="slide-title">Please try again... 😿</h1>
           <p class="slide-sub">Don't break my heart on your birthday! Please accept!</p>
@@ -436,6 +436,10 @@
         <div class="letter-stage">
           <div class="parchment-sheet">
             <div class="wax-seal-badge">💌</div>
+            <div class="letter-polaroid-frame" id="letter-photo-wrap">
+              <div class="washi-tape tape-top"></div>
+              <img id="letter-photo" src="assets/images/2bd6fdb2b6bf296a351bf5c516e35238.jpg" alt="Letter Memory Photo" class="letter-polaroid-img" />
+            </div>
             <h2 class="letter-greeting" id="letter-greeting">My Dearest Birthday Person,</h2>
             <div class="letter-body-text" id="letter-content">
               I've been trying to find the right words to tell you how much you mean to me, and I keep coming back to how lucky I am to have you in my life. You bring so much light, laughter, and calm into my world every single day. Seeing your smile makes everything feel right. I hope this birthday brings you all the joy, love, and wonder you give to everyone around you!
@@ -462,15 +466,15 @@
           <h1 class="slide-title flowers-title">Some flowers for you!! 🌸💐</h1>
           <div class="flower-gallery">
             <div class="flower-frame polaroid-style tilt-left">
-              <img src="assets/images/5087d25b38d46f06598fa2cf8e331598.jpg" alt="Flower 1" class="flower-img" />
+              <img id="flower-photo-1" src="assets/images/5087d25b38d46f06598fa2cf8e331598.jpg" alt="Flower 1" class="flower-img" />
               <div class="flower-caption">Fresh blooms 🌷</div>
             </div>
             <div class="flower-frame polaroid-style tilt-center">
-              <img src="assets/images/b2e0e4968c920cb3ff6b64472a80d770.jpg" alt="Flower 2" class="flower-img" />
+              <img id="flower-photo-2" src="assets/images/b2e0e4968c920cb3ff6b64472a80d770.jpg" alt="Flower 2" class="flower-img" />
               <div class="flower-caption">For the prettiest smile 🌼</div>
             </div>
             <div class="flower-frame polaroid-style tilt-right">
-              <img src="assets/images/2d26fa6f4f5d96b95ccd30659d1fb414.jpg" alt="Flower 3" class="flower-img" />
+              <img id="flower-photo-3" src="assets/images/2d26fa6f4f5d96b95ccd30659d1fb414.jpg" alt="Flower 3" class="flower-img" />
               <div class="flower-caption">Forever blooming 🌹</div>
             </div>
           </div>
@@ -523,6 +527,13 @@
             <!-- Right Page -->
             <div class="book-page page-right">
               <div class="page-corner-tape tape-tr"></div>
+
+              <!-- Memory Polaroid 2 (Right Page) -->
+              <div class="memory-polaroid right-polaroid" id="scrapbook-polaroid-2">
+                <div class="polaroid-pin">📌</div>
+                <img id="scrapbook-photo-2" src="assets/images/45aae7f5e21ba481cbe5a6bae512295a.jpg" alt="Memory Photo 2" class="polaroid-photo" />
+                <div class="polaroid-note" id="scrapbook-caption-2">Sweet moments 💖</div>
+              </div>
               
               <!-- Disco ball & stars -->
               <img src="assets/images/b387aa4adfcc7da0a7b93c966944bd9b.png" class="scrapbook-disco" alt="" />

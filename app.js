@@ -899,23 +899,113 @@
       if (bdaySubtitle) bdaySubtitle.textContent = `12:00 AM — Officially ${name}'s special day! 💙`;
     }
 
-    // Photos
-    const coverPhoto = celebration.cover_photo || (celebration.photos && celebration.photos[0]) || celebration.photo_polaroid;
+    // Photos Customization (All 15 celebration photos)
+    const photos = Array.isArray(celebration.photos) ? celebration.photos : [];
+    const pData = celebration.photos_data || {};
+
+    // 1. Passcode Polaroid
+    const coverPhoto = celebration.cover_photo || pData.cover_photo || photos[0] || celebration.photo_polaroid;
     if (coverPhoto) {
       const pImg = document.getElementById('passcode-polaroid');
       if (pImg) pImg.src = coverPhoto;
     }
 
-    const polaroid1 = celebration.polaroid_1_photo || (celebration.photos && celebration.photos[1]);
-    if (polaroid1) {
+    // 2. 12:00 AM Midnight Portrait
+    const spreadPhoto = celebration.spread_photo || pData.spread_photo || celebration.polaroid_1_photo || photos[1];
+    if (spreadPhoto) {
       const spreadImg = document.getElementById('imgSpread');
-      if (spreadImg) spreadImg.src = polaroid1;
+      if (spreadImg) spreadImg.src = spreadPhoto;
     }
 
-    const polaroid2 = celebration.polaroid_2_photo || (celebration.photos && celebration.photos[2]);
-    if (polaroid2) {
-      const scrapImg = document.getElementById('scrapbook-photo-1');
-      if (scrapImg) scrapImg.src = polaroid2;
+    // 3. Love Letter Polaroid
+    const letterPhoto = celebration.letter_photo || pData.letter_photo || photos[2] || celebration.photo_letter;
+    if (letterPhoto) {
+      const letterImg = document.getElementById('letter-photo');
+      if (letterImg) letterImg.src = letterPhoto;
+    }
+
+    // 4. Scrapbook Album Photo 1 (Left Page)
+    const scrapPhoto1 = celebration.scrapbook_photo_1 || pData.scrapbook_photo_1 || celebration.polaroid_2_photo || photos[3];
+    if (scrapPhoto1) {
+      const scrapImg1 = document.getElementById('scrapbook-photo-1');
+      if (scrapImg1) scrapImg1.src = scrapPhoto1;
+    }
+
+    // 5. Scrapbook Album Photo 2 (Right Page)
+    const scrapPhoto2 = celebration.scrapbook_photo_2 || pData.scrapbook_photo_2 || celebration.polaroid_3_photo || photos[4];
+    if (scrapPhoto2) {
+      const scrapImg2 = document.getElementById('scrapbook-photo-2');
+      if (scrapImg2) scrapImg2.src = scrapPhoto2;
+    }
+
+    // 6. Flower Bouquet Stem 1
+    const flower1 = celebration.flower_photo_1 || pData.flower_photo_1 || photos[5];
+    if (flower1) {
+      const el = document.getElementById('flower-photo-1');
+      if (el) el.src = flower1;
+    }
+
+    // 7. Flower Bouquet Stem 2
+    const flower2 = celebration.flower_photo_2 || pData.flower_photo_2 || photos[6];
+    if (flower2) {
+      const el = document.getElementById('flower-photo-2');
+      if (el) el.src = flower2;
+    }
+
+    // 8. Flower Bouquet Stem 3
+    const flower3 = celebration.flower_photo_3 || pData.flower_photo_3 || photos[7];
+    if (flower3) {
+      const el = document.getElementById('flower-photo-3');
+      if (el) el.src = flower3;
+    }
+
+    // 9. Birthday Cake (Lit Candles)
+    const cakePhoto = celebration.cake_photo || pData.cake_photo || photos[8];
+    if (cakePhoto) {
+      const el = document.getElementById('cake-img');
+      if (el) el.src = cakePhoto;
+    }
+
+    // 10. Blown-out Celebration Cake
+    const cakeCelebratePhoto = celebration.cake_celebrate_photo || pData.cake_celebrate_photo || photos[9];
+    if (cakeCelebratePhoto) {
+      const el = document.getElementById('cake-celebrate-img');
+      if (el) el.src = cakeCelebratePhoto;
+    }
+
+    // 11. Mascot Surprise Bear
+    const mascotPhoto = celebration.mascot_photo || pData.mascot_photo || photos[10];
+    if (mascotPhoto) {
+      const el = document.getElementById('mascot-img');
+      if (el) el.src = mascotPhoto;
+    }
+
+    // 12. Accept Gifts Teddy Mascot
+    const teddyPhoto = celebration.teddy_photo || pData.teddy_photo || photos[11];
+    if (teddyPhoto) {
+      const el = document.getElementById('teddy-img');
+      if (el) el.src = teddyPhoto;
+    }
+
+    // 13. Wrong Passcode Cat GIF
+    const wrongCodePhoto = celebration.wrong_code_photo || pData.wrong_code_photo || photos[12];
+    if (wrongCodePhoto) {
+      const el = document.getElementById('wrong-code-img');
+      if (el) el.src = wrongCodePhoto;
+    }
+
+    // 14. "How Dare You" Angry Cat GIF
+    const angryCatPhoto = celebration.angry_cat_photo || pData.angry_cat_photo || photos[13];
+    if (angryCatPhoto) {
+      const el = document.getElementById('angry-cat-img');
+      if (el) el.src = angryCatPhoto;
+    }
+
+    // 15. "Please Accept My Gifts" Crying Cat GIF
+    const cryingCatPhoto = celebration.crying_cat_photo || pData.crying_cat_photo || photos[14];
+    if (cryingCatPhoto) {
+      const el = document.getElementById('crying-cat-img');
+      if (el) el.src = cryingCatPhoto;
     }
 
     const polaroidNoteText = celebration.polaroid_note || celebration.polaroidNote;
@@ -1286,6 +1376,7 @@
     openMysteryBox2,
     handleWishSubmit,
     hydrateCelebrationData,
+    applyCelebrationData,
     renderWishesFeed,
     crossfadeTrack,
     audioEngine: window.BirthdayAudioEngine,

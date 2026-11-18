@@ -208,6 +208,20 @@
     }
 
     /* Photo Upload Box & Previews */
+    .photo-subheading {
+      grid-column: span 2;
+      font-size: 16px;
+      font-weight: 700;
+      color: #2b5487;
+      margin-top: 14px;
+      margin-bottom: 4px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px dashed #cde0f7;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .photo-upload-row {
       display: flex;
       gap: 16px;
@@ -733,12 +747,17 @@
           <!-- Section 2: Custom Photos (Uploads & URLs) -->
           <div class="form-card">
             <h2 class="form-section-title">2. Memory Photos 📸</h2>
-            <p class="section-desc">Select image files from your device to upload automatically to Supabase Storage, or paste direct URLs.</p>
+            <p class="section-desc">Customize <strong>every photo</strong> in the website! Upload files from your device to Supabase Storage, or enter image URLs.</p>
 
             <div class="form-grid">
+              <!-- Subheading 1: Memory Polaroids & Portraits -->
+              <div class="photo-subheading">
+                <span>🖼️ Memory Polaroids &amp; Portraits</span>
+              </div>
+
               <!-- Photo 1: Passcode Polaroid -->
               <div class="form-group">
-                <label for="admin-photo-polaroid">Passcode Polaroid Photo</label>
+                <label for="admin-photo-polaroid">Passcode Screen Polaroid Photo</label>
                 <div class="photo-upload-row">
                   <div class="photo-input-stack">
                     <div class="file-input-wrapper">
@@ -752,9 +771,25 @@
                 </div>
               </div>
 
-              <!-- Photo 2: Letter Polaroid -->
+              <!-- Photo 2: 12:00 AM Birthday Spread Portrait -->
               <div class="form-group">
-                <label for="admin-photo-letter">Letter Polaroid Photo</label>
+                <label for="admin-photo-spread">12:00 AM Midnight Portrait</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-spread" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-spread" class="file-input-real" accept="image/*">
+                      <span id="badge-spread" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-spread" placeholder="Or enter Image URL" value="assets/images/8f4399ac68b4198a5ef2dcbb0eec4224.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-spread"></div>
+                </div>
+              </div>
+
+              <!-- Photo 3: Love Letter Polaroid -->
+              <div class="form-group">
+                <label for="admin-photo-letter">Love Letter Polaroid Photo</label>
                 <div class="photo-upload-row">
                   <div class="photo-input-stack">
                     <div class="file-input-wrapper">
@@ -768,9 +803,9 @@
                 </div>
               </div>
 
-              <!-- Photo 3: Scrapbook Photo 1 -->
+              <!-- Photo 4: Scrapbook Photo 1 (Left Page) -->
               <div class="form-group">
-                <label for="admin-photo-scrapbook-1">Scrapbook Photo 1</label>
+                <label for="admin-photo-scrapbook-1">Scrapbook Photo 1 (Left Page)</label>
                 <div class="photo-upload-row">
                   <div class="photo-input-stack">
                     <div class="file-input-wrapper">
@@ -784,9 +819,9 @@
                 </div>
               </div>
 
-              <!-- Photo 4: Scrapbook Photo 2 -->
+              <!-- Photo 5: Scrapbook Photo 2 (Right Page) -->
               <div class="form-group">
-                <label for="admin-photo-scrapbook-2">Scrapbook Photo 2</label>
+                <label for="admin-photo-scrapbook-2">Scrapbook Photo 2 (Right Page)</label>
                 <div class="photo-upload-row">
                   <div class="photo-input-stack">
                     <div class="file-input-wrapper">
@@ -797,6 +832,181 @@
                     <input type="text" id="admin-photo-scrapbook-2" placeholder="Or enter Image URL" value="assets/images/45aae7f5e21ba481cbe5a6bae512295a.jpg">
                   </div>
                   <div class="img-preview" id="preview-scrapbook-2"></div>
+                </div>
+              </div>
+
+              <!-- Subheading 2: Flower Bouquet -->
+              <div class="photo-subheading">
+                <span>💐 Flower Bouquet Stems</span>
+              </div>
+
+              <!-- Photo 6: Flower Stem 1 -->
+              <div class="form-group">
+                <label for="admin-photo-flower-1">Flower Bouquet Stem 1</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-flower-1" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-flower-1" class="file-input-real" accept="image/*">
+                      <span id="badge-flower-1" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-flower-1" placeholder="Or enter Image URL" value="assets/images/5087d25b38d46f06598fa2cf8e331598.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-flower-1"></div>
+                </div>
+              </div>
+
+              <!-- Photo 7: Flower Stem 2 -->
+              <div class="form-group">
+                <label for="admin-photo-flower-2">Flower Bouquet Stem 2</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-flower-2" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-flower-2" class="file-input-real" accept="image/*">
+                      <span id="badge-flower-2" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-flower-2" placeholder="Or enter Image URL" value="assets/images/b2e0e4968c920cb3ff6b64472a80d770.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-flower-2"></div>
+                </div>
+              </div>
+
+              <!-- Photo 8: Flower Stem 3 -->
+              <div class="form-group">
+                <label for="admin-photo-flower-3">Flower Bouquet Stem 3</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-flower-3" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-flower-3" class="file-input-real" accept="image/*">
+                      <span id="badge-flower-3" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-flower-3" placeholder="Or enter Image URL" value="assets/images/2d26fa6f4f5d96b95ccd30659d1fb414.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-flower-3"></div>
+                </div>
+              </div>
+
+              <!-- Subheading 3: Birthday Cake -->
+              <div class="photo-subheading">
+                <span>🎂 Birthday Cake &amp; Celebration</span>
+              </div>
+
+              <!-- Photo 9: Birthday Cake (Candles lit) -->
+              <div class="form-group">
+                <label for="admin-photo-cake">Birthday Cake (With Candles)</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-cake" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-cake" class="file-input-real" accept="image/*">
+                      <span id="badge-cake" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-cake" placeholder="Or enter Image URL" value="assets/images/09a443278b31bd865cae4542ae22295b.png">
+                  </div>
+                  <div class="img-preview" id="preview-cake"></div>
+                </div>
+              </div>
+
+              <!-- Photo 10: Blown-out Celebration Cake -->
+              <div class="form-group">
+                <label for="admin-photo-cake-celebrate">Celebration Cake (Candles Blown)</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-cake-celebrate" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-cake-celebrate" class="file-input-real" accept="image/*">
+                      <span id="badge-cake-celebrate" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-cake-celebrate" placeholder="Or enter Image URL" value="assets/images/b1dee7f2cea3aa95b9dc54d5a8ccc1fa.png">
+                  </div>
+                  <div class="img-preview" id="preview-cake-celebrate"></div>
+                </div>
+              </div>
+
+              <!-- Subheading 4: Mascots & Reactions -->
+              <div class="photo-subheading">
+                <span>🐾 Mascots &amp; Reaction GIFs</span>
+              </div>
+
+              <!-- Photo 11: Mascot Surprise Bear -->
+              <div class="form-group">
+                <label for="admin-photo-mascot">Surprise Mascot Bear</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-mascot" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-mascot" class="file-input-real" accept="image/*">
+                      <span id="badge-mascot" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-mascot" placeholder="Or enter Image URL" value="assets/images/3a671a6dfc5faa2d87a4b208f50bb90a.png">
+                  </div>
+                  <div class="img-preview" id="preview-mascot"></div>
+                </div>
+              </div>
+
+              <!-- Photo 12: Accept Gifts Teddy -->
+              <div class="form-group">
+                <label for="admin-photo-teddy">Accept Gifts Mascot Teddy</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-teddy" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-teddy" class="file-input-real" accept="image/*">
+                      <span id="badge-teddy" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-teddy" placeholder="Or enter Image URL" value="assets/images/a5bdfde35d03ce2bd14f553ed2249355.png">
+                  </div>
+                  <div class="img-preview" id="preview-teddy"></div>
+                </div>
+              </div>
+
+              <!-- Photo 13: Wrong Code Reaction -->
+              <div class="form-group">
+                <label for="admin-photo-wrong-code">Wrong Passcode Reaction (Cat GIF)</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-wrong-code" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-wrong-code" class="file-input-real" accept="image/*">
+                      <span id="badge-wrong-code" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-wrong-code" placeholder="Or enter Image/GIF URL" value="assets/images/d06c4a481034f2325da9010e7d6704fa.gif">
+                  </div>
+                  <div class="img-preview" id="preview-wrong-code"></div>
+                </div>
+              </div>
+
+              <!-- Photo 14: Angry Cat Reaction -->
+              <div class="form-group">
+                <label for="admin-photo-angry-cat">&quot;How Dare You&quot; Reaction (Cat GIF)</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-angry-cat" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-angry-cat" class="file-input-real" accept="image/*">
+                      <span id="badge-angry-cat" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-angry-cat" placeholder="Or enter Image/GIF URL" value="assets/images/bbd46bb7feaae5804098b672ba73435b.gif">
+                  </div>
+                  <div class="img-preview" id="preview-angry-cat"></div>
+                </div>
+              </div>
+
+              <!-- Photo 15: Crying Cat Reaction -->
+              <div class="form-group">
+                <label for="admin-photo-crying-cat">&quot;Please Accept My Gifts&quot; Crying Cat</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-crying-cat" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-crying-cat" class="file-input-real" accept="image/*">
+                      <span id="badge-crying-cat" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-crying-cat" placeholder="Or enter Image/GIF URL" value="assets/images/0065f633b36ed9f79b6383af28e2926d.png">
+                  </div>
+                  <div class="img-preview" id="preview-crying-cat"></div>
                 </div>
               </div>
             </div>
