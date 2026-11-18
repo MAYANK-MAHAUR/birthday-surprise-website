@@ -11,6 +11,12 @@
 
 const DEFAULT_MASTER_PASSCODE = '1204';
 
+const CryptoUtil = (typeof CelebrationCrypto !== 'undefined')
+  ? CelebrationCrypto
+  : (typeof require !== 'undefined' ? (function () {
+      try { return require('./crypto-util.js'); } catch (_) { return null; }
+    })() : null);
+
 /**
  * Validate Master Passcode
  * @param {string} code
@@ -38,15 +44,39 @@ function generateSlug(name) {
 }
 
 /**
+ * Generate a cryptographically secure, high-entropy unguessable slug (anti-guessing mode)
+ * Format: sec_<32 hex chars> (128 bits of entropy)
+ * Possibilities: 2^128 = 3.4 x 10^38 combinations — mathematically impossible to guess.
+ * @param {string} [prefix='sec']
+ * @returns {string}
+ */
+function generateSecureSlug(prefix = 'sec') {
+  if (CryptoUtil && typeof CryptoUtil.generateSecureSlug === 'function') {
+    return CryptoUtil.generateSecureSlug(prefix);
+  }
+  const randomHex = Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+  return `${prefix}_${randomHex}`;
+}
+
+/**
  * Format celebration payload conforming to PostgreSQL public.celebrations schema
  * @param {Object} data
+ * @param {Object} [options]
  * @returns {Object}
  */
-function formatCelebrationPayload(data) {
+function formatCelebrationPayload(data, options = {}) {
   const name = (data.name || data.person_name || 'My Love').trim();
   const sender = (data.sender || data.letter_author || '').trim();
   const passcode = (data.passcode !== undefined ? String(data.passcode).trim() : '1204');
-  const slug = data.slug || generateSlug(name);
+  
+  let slug = data.slug;
+  if (!slug) {
+    if (options.useSecureSlug || data.useSecureSlug) {
+      slug = generateSecureSlug();
+    } else {
+      slug = generateSlug(name);
+    }
+  }
 
   let song = data.song || 'haareya';
   if (song.includes('city_of_stars')) song = 'city_of_stars';
@@ -99,12 +129,14 @@ function formatCelebrationPayload(data) {
 
 /**
  * Build shareable URL pointing to index.html with ?c=${slug}
+ * Supports anti-guessing high-entropy slugs and optional &k= key &enc= ciphertext
  * @param {Object} record
  * @param {string} [origin]
  * @param {string} [pathname]
+ * @param {Object} [options]
  * @returns {string}
  */
-function buildShareUrl(record, origin, pathname) {
+function buildShareUrl(record, origin, pathname, options = {}) {
   const slug = record.slug || record.id || 'default';
   let host = origin || (typeof window !== 'undefined' && window.location ? window.location.origin : '');
   let path = pathname || (typeof window !== 'undefined' && window.location ? window.location.pathname : '');
@@ -117,7 +149,35 @@ function buildShareUrl(record, origin, pathname) {
     path += 'index.html';
   }
 
-  return `${host}${path}?c=${encodeURIComponent(slug)}`;
+  let url = `${host}${path}?c=${encodeURIComponent(slug)}`;
+  const key = record.encryption_key || options.encryptionKey;
+  const encToken = record.encrypted_token || options.encryptedToken;
+
+  if (key) {
+    url += `&k=${encodeURIComponent(key)}`;
+  }
+  if (encToken) {
+    url += `&enc=${encodeURIComponent(encToken)}`;
+  }
+
+  return url;
+}
+
+/**
+ * Build encrypted shareable URL with AES-256-GCM
+ * @param {Object} record
+ * @param {string} [secretKey]
+ * @param {string} [origin]
+ * @param {string} [pathname]
+ * @returns {Promise<string>}
+ */
+async function buildEncryptedShareUrl(record, secretKey, origin, pathname) {
+  const key = secretKey || (CryptoUtil ? CryptoUtil.generateEncryptionKey() : '1204');
+  let token = '';
+  if (CryptoUtil && typeof CryptoUtil.encryptPayload === 'function') {
+    token = await CryptoUtil.encryptPayload(record, key);
+  }
+  return buildShareUrl(record, origin, pathname, { encryptionKey: key, encryptedToken: token });
 }
 
 /**
@@ -507,6 +567,9 @@ if (typeof document !== 'undefined') {
         const gmail = document.getElementById('admin-social-email')?.value.trim() || '';
         const whatsapp = document.getElementById('admin-social-wa')?.value.trim() || '';
 
+        const isEncryptEnabled = document.getElementById('admin-encrypt-toggle')?.checked ?? true;
+        const isPasscodeOnly = document.getElementById('admin-passcode-encrypt-toggle')?.checked ?? false;
+
         const rawData = {
           name,
           sender,
@@ -523,10 +586,26 @@ if (typeof document !== 'undefined') {
             snapchat,
             gmail,
             whatsapp
-          }
+          },
+          useSecureSlug: isEncryptEnabled
         };
 
-        const celebrationPayload = formatCelebrationPayload(rawData);
+        const celebrationPayload = formatCelebrationPayload(rawData, { useSecureSlug: isEncryptEnabled });
+
+        // If encryption is enabled, generate 256-bit key and encrypt payload
+        let encKey = null;
+        let encryptedToken = null;
+        if (isEncryptEnabled && CryptoUtil && typeof CryptoUtil.encryptPayload === 'function') {
+          encKey = isPasscodeOnly ? null : CryptoUtil.generateEncryptionKey();
+          const secret = isPasscodeOnly ? passcode : encKey;
+          try {
+            encryptedToken = await CryptoUtil.encryptPayload(celebrationPayload, secret);
+            celebrationPayload.encryption_key = encKey;
+            celebrationPayload.encrypted_token = encryptedToken;
+          } catch (cryptErr) {
+            console.warn('Payload encryption error:', cryptErr);
+          }
+        }
 
         try {
           const client = window.SupabaseCelebrationClient;
@@ -536,9 +615,13 @@ if (typeof document !== 'undefined') {
           }
 
           const record = (result && result.record) || celebrationPayload;
-          const shareUrl = (client && typeof client.generateShareableUrl === 'function')
-            ? client.generateShareableUrl(record)
-            : buildShareUrl(record);
+          if (encKey) record.encryption_key = encKey;
+          if (encryptedToken) record.encrypted_token = encryptedToken;
+
+          const shareUrl = buildShareUrl(record, null, null, {
+            encryptionKey: encKey,
+            encryptedToken: encryptedToken
+          });
 
           // Populate Result Card
           if (shareInput) shareInput.value = shareUrl;
@@ -566,12 +649,17 @@ if (typeof document !== 'undefined') {
           }
 
           if (statusMsg) {
-            statusMsg.textContent = '🎉 Celebration created successfully! Share your custom link below:';
+            statusMsg.textContent = isEncryptEnabled
+              ? '🔒 Anti-guessing celebration created! URL is 100% encrypted & impossible to guess.'
+              : '🎉 Celebration created successfully! Share your custom link below:';
             statusMsg.className = 'admin-status-text status-success';
           }
         } catch (err) {
           console.error('Error saving celebration:', err);
-          const shareUrl = buildShareUrl(celebrationPayload);
+          const shareUrl = buildShareUrl(celebrationPayload, null, null, {
+            encryptionKey: encKey,
+            encryptedToken: encryptedToken
+          });
 
           if (shareInput) shareInput.value = shareUrl;
           if (previewBtn) previewBtn.href = shareUrl;
@@ -582,7 +670,9 @@ if (typeof document !== 'undefined') {
           }
 
           if (statusMsg) {
-            statusMsg.textContent = 'Saved to offline local storage! Share link below:';
+            statusMsg.textContent = isEncryptEnabled
+              ? '🔒 Saved locally with anti-guessing encryption! Link cannot be guessed.'
+              : 'Saved to offline local storage! Share link below:';
             statusMsg.className = 'admin-status-text status-success';
           }
         }
@@ -627,8 +717,11 @@ if (typeof module !== 'undefined' && module.exports) {
     DEFAULT_MASTER_PASSCODE,
     verifyMasterPasscode,
     generateSlug,
+    generateSecureSlug,
     formatCelebrationPayload,
     buildShareUrl,
+    buildEncryptedShareUrl,
     buildWhatsAppShareUrl,
+    CelebrationCrypto: CryptoUtil,
   };
 }

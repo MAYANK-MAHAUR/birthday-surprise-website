@@ -569,10 +569,12 @@
 
     /**
      * Generate shareable URL for celebration
+     * Supports anti-guessing high-entropy slugs and optional &k= key &enc= ciphertext
      * @param {Object} celebration
+     * @param {Object} [options]
      * @returns {string}
      */
-    generateShareableUrl(celebration) {
+    generateShareableUrl(celebration, options = {}) {
       const slug = celebration.slug || celebration.id || 'default';
       let origin = '';
       let pathname = '';
@@ -583,7 +585,17 @@
           pathname += '/';
         }
       }
-      return `${origin}${pathname}?c=${encodeURIComponent(slug)}`;
+      let url = `${origin}${pathname}?c=${encodeURIComponent(slug)}`;
+      const key = celebration.encryption_key || options.encryptionKey;
+      const encToken = celebration.encrypted_token || options.encryptedToken;
+
+      if (key) {
+        url += `&k=${encodeURIComponent(key)}`;
+      }
+      if (encToken) {
+        url += `&enc=${encodeURIComponent(encToken)}`;
+      }
+      return url;
     }
   }
 

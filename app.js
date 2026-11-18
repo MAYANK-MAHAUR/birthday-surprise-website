@@ -51,7 +51,8 @@
     currentCelebrationSlug: null,
     currentCelebrationData: null,
     selectedPhotoFile: null,
-    selectedPhotoDataUrl: null
+    selectedPhotoDataUrl: null,
+    passcodeEncryptedToken: null
   };
 
   // --- AUDIO SYNTHESIZER (Tactile Sound Effects via Web Audio API) ---
@@ -427,8 +428,41 @@
     }
   }
 
-  function verifyPasscode() {
+  async function verifyPasscode() {
     const code = state.enteredPasscode;
+
+    // Zero-Knowledge Passcode Decryption: If celebration payload is passcode-encrypted
+    if (state.passcodeEncryptedToken && window.CelebrationCrypto) {
+      try {
+        const decrypted = await window.CelebrationCrypto.decryptPayload(state.passcodeEncryptedToken, code);
+        if (decrypted) {
+          applyCelebrationData(decrypted);
+          state.passcodeEncryptedToken = null; // Decrypted successfully!
+          playSuccessChime();
+          if (window.confetti) {
+            window.confetti({ particleCount: 60, spread: 65, origin: { y: 0.7 } });
+          }
+          setTimeout(() => {
+            goToSlide('slide-surprise');
+          }, 280);
+          return;
+        }
+      } catch (err) {
+        // Authentication tag check failed -> Passcode is wrong!
+        playErrorBuzz();
+        if (keypadCard) {
+          keypadCard.classList.add('shake-anim');
+          setTimeout(() => keypadCard.classList.remove('shake-anim'), 450);
+        }
+        setTimeout(() => {
+          state.enteredPasscode = '';
+          updatePinDisplay();
+          goToSlide('slide-wrong-passcode');
+        }, 350);
+        return;
+      }
+    }
+
     const cleanCurrent = String(state.currentPasscode).trim();
     // Accept valid passcode or empty/auto-enter fallback
     if (code === cleanCurrent || code === '1204' || code === '2024' || code === '1234' || code === '') {
@@ -755,33 +789,73 @@
     if (photoModal) photoModal.classList.remove('active');
   }
 
-  // --- DYNAMIC DATA HYDRATION (From Supabase or URL parameter) ---
+  // --- DYNAMIC DATA HYDRATION (From Supabase or Encrypted URL parameters) ---
   async function hydrateCelebrationData() {
     const urlParams = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
     const slug = urlParams.get('c') || urlParams.get('celebration') || urlParams.get('id');
+    const encToken = urlParams.get('enc') || hashParams.get('enc');
+    const encKey = urlParams.get('k') || urlParams.get('key') || hashParams.get('k') || hashParams.get('key');
 
     let celebration = null;
 
-    // 1. Query Supabase via SupabaseCelebrationClient
-    if (slug && window.SupabaseCelebrationClient && typeof window.SupabaseCelebrationClient.getCelebration === 'function') {
+    // 1. Direct Encrypted URL Payload (AES-256-GCM Anti-Guessing Protection)
+    if (encToken) {
+      const cryptoUtil = window.CelebrationCrypto;
+      if (encKey && cryptoUtil && typeof cryptoUtil.decryptPayload === 'function') {
+        try {
+          celebration = await cryptoUtil.decryptPayload(encToken, encKey);
+        } catch (e) {
+          console.warn('Failed to decrypt URL enc token with provided key:', e);
+        }
+      } else if (!encKey) {
+        // Passcode-Only Encryption Mode: Defer decryption to Keypad Passcode entry
+        state.passcodeEncryptedToken = encToken;
+      }
+    }
+
+    // 2. Query Supabase via SupabaseCelebrationClient
+    if (!celebration && slug && window.SupabaseCelebrationClient && typeof window.SupabaseCelebrationClient.getCelebration === 'function') {
       try {
         celebration = await window.SupabaseCelebrationClient.getCelebration(slug);
+        if (celebration && celebration.encrypted_token && window.CelebrationCrypto) {
+          if (encKey) {
+            try {
+              const dec = await window.CelebrationCrypto.decryptPayload(celebration.encrypted_token, encKey);
+              celebration = Object.assign({}, celebration, dec);
+            } catch (_) {}
+          } else {
+            state.passcodeEncryptedToken = celebration.encrypted_token;
+          }
+        }
       } catch (err) {
         console.warn('Supabase getCelebration query error:', err);
       }
     }
 
-    // 2. Query fallback payload via ?data= (base64 encoded JSON)
+    // 3. Fallback payload via ?data= (encrypted token or base64 JSON)
     if (!celebration && urlParams.has('data')) {
-      try {
-        const decoded = decodeURIComponent(atob(urlParams.get('data')));
-        celebration = JSON.parse(decoded);
-      } catch (e) {
-        console.warn('Could not decode URL data payload:', e);
+      const rawData = urlParams.get('data');
+      const cryptoUtil = window.CelebrationCrypto;
+      if (cryptoUtil && typeof cryptoUtil.isEncryptedToken === 'function' && cryptoUtil.isEncryptedToken(rawData)) {
+        if (encKey) {
+          try {
+            celebration = await cryptoUtil.decryptPayload(rawData, encKey);
+          } catch (_) {}
+        } else {
+          state.passcodeEncryptedToken = rawData;
+        }
+      } else {
+        try {
+          const decoded = decodeURIComponent(atob(rawData));
+          celebration = JSON.parse(decoded);
+        } catch (e) {
+          console.warn('Could not decode URL data payload:', e);
+        }
       }
     }
 
-    // 3. Fallback to localStorage
+    // 4. Fallback to localStorage
     if (!celebration && typeof localStorage !== 'undefined') {
       try {
         const localDb = JSON.parse(localStorage.getItem('birthday_celebrations_db') || '{}');

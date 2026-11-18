@@ -345,6 +345,97 @@
       animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
+    /* Security & Anti-Guessing Card */
+    .security-card {
+      border: 2px solid #b8d5fa;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f8fd 100%);
+    }
+    .security-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .security-icon-wrap {
+      width: 44px;
+      height: 44px;
+      background: #e1effe;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid #bdd7f5;
+    }
+    .security-toggle-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 14px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #dbe8f7;
+    }
+    .security-toggle-label strong {
+      display: block;
+      color: #1a3356;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    .security-info-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: #eaf3fd;
+      border-left: 4px solid #3b74b4;
+      border-radius: 8px;
+      display: flex;
+      gap: 10px;
+      font-size: 13px;
+      color: #274872;
+      line-height: 1.45;
+    }
+
+    /* Switch Component */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider {
+      background-color: #3b74b4;
+    }
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
     @keyframes popIn {
       from { opacity: 0; transform: translateY(20px) scale(0.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
@@ -773,6 +864,51 @@ Thank you for being my favorite person to talk to, my favorite person to be quie
             </div>
           </div>
 
+          <!-- Section 5: Link Privacy & Encryption (Anti-Guessing) -->
+          <div class="form-card security-card">
+            <div class="security-card-header">
+              <div class="security-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2b6cb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div>
+                <h2 class="form-section-title" style="margin: 0;">5. Privacy &amp; Anti-Guessing Encryption 🔒</h2>
+                <p class="section-desc" style="margin: 4px 0 0 0;">Ensure nobody can guess or snoop on this person's celebration URL.</p>
+              </div>
+            </div>
+
+            <div class="security-toggle-row">
+              <label class="switch" for="admin-encrypt-toggle">
+                <input type="checkbox" id="admin-encrypt-toggle" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="security-toggle-label">
+                <strong>Anti-Guessing Mode (128-bit Unguessable Cryptographic Slug)</strong>
+                <span class="field-hint">Generates a high-entropy random URL slug (e.g. <code>sec_9a8f4c2...</code>) instead of using the person's name. Search space: 3.4 × 10³⁸ combinations — impossible to guess.</span>
+              </div>
+            </div>
+
+            <div class="security-toggle-row" style="margin-top: 12px;">
+              <label class="switch" for="admin-passcode-encrypt-toggle">
+                <input type="checkbox" id="admin-passcode-encrypt-toggle">
+                <span class="slider"></span>
+              </label>
+              <div class="security-toggle-label">
+                <strong>Zero-Knowledge Passcode Encryption (Maximum Privacy)</strong>
+                <span class="field-hint">Encrypts the entire celebration (letter, photos, socials) using AES-256-GCM derived from the recipient's secret 4-digit passcode. No data can be decrypted until the passcode is entered on the keypad.</span>
+              </div>
+            </div>
+
+            <div class="security-info-box">
+              <span class="security-info-icon">🛡️</span>
+              <span class="security-info-text">
+                <strong>Protected against brute-force &amp; URL guessing:</strong> Slugs are cryptographically randomized with 128 bits of entropy. It would take billions of years to guess this link.
+              </span>
+            </div>
+          </div>
+
           <!-- Submit Button -->
           <div class="admin-submit-bar">
             <button type="submit" id="btn-create-celebration" class="cute-btn cute-btn-pill cute-btn-blue admin-create-btn">
@@ -804,6 +940,8 @@ Thank you for being my favorite person to talk to, my favorite person to be quie
     </div>
   </main>
 
+  <!-- Cryptographic Anti-Guessing Utility -->
+  <script src="crypto-util.js"></script>
   <!-- Supabase CDN Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Supabase config -->
