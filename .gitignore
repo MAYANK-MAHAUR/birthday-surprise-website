@@ -1,0 +1,13 @@
+# Temporary extraction files
+_assets/
+canva_bootstrap.json
+canva_live.html
+canva_page.html
+scratch_pages_extracted.json
+download_all_assets.py
+
+# Dependencies & logs
+node_modules/
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday! 🎂✨ | A Special Surprise</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>" />
+  
+  <!-- Canva Fonts & Google Fonts -->
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Floating Audio Player -->
+  <aside id="music-player" class="music-widget" aria-label="Music Player">
+    <div class="vinyl-wrapper" id="music-toggle" title="Click to Play / Pause Music">
+      <div class="vinyl-disc" id="vinyl-disc">
+        <div class="vinyl-grooves"></div>
+        <div class="vinyl-label">🎵</div>
+      </div>
+    </div>
+    <div class="music-meta">
+      <div class="music-title-wrap">
+        <span class="music-label">MUSIC</span>
+        <span class="music-title" id="music-title">Haareya</span>
+      </div>
+      <div class="music-bars" id="music-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <button id="song-switch-btn" class="song-switch-btn" title="Switch Track: Haareya / City of Stars">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>
+      <span>Switch</span>
+    </button>
+    <audio id="bg-music" loop preload="auto">
+      <source src="assets/audio/haareya.mp3" type="audio/mpeg" />
+    </audio>
+  </aside>
+
+  <!-- Top Floating Admin Link -->
+  <a href="admin.html" class="floating-admin-btn" title="Create your own birthday website">
+    <span>✨ Create Yours</span>
+  </a>
+
+  <!-- Stage Scaler & Centered Stage -->
+  <div id="stage-scaler">
+    <main id="stage" class="stage-canvas">
+      <!-- Canva Cloud Paper Wipe Transition Overlay -->
+      <div class="cloud-wipe-overlay" id="cloudWipe" aria-hidden="true"></div>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 0: PASSCODE KEYPAD SCREEN             -->
+      <!-- ========================================== -->
+      <section id="slide-passcode" class="slide active">
+        <!-- Torn Gingham Corners -->
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+        
+        <!-- Sparkle stickers -->
+        <img src="assets/images/36390bb80030bd93bab742df3a946f5d.png" class="sparkle-sticker star-1" alt="" />
+        <img src="assets/images/0099aefeea146e88918db1a9b45b5390.png" class="sparkle-sticker star-2" alt="" />
+
+        <div class="passcode-container">
+          <!-- Left: Tilted Polaroid Frame -->
+          <div class="polaroid-wrapper" id="passcode-polaroid-wrap">
+            <div class="washi-tape tape-top"></div>
+            <div class="polaroid-card">
+              <div class="polaroid-photo-frame">
+                <img id="passcode-polaroid" src="assets/images/8338b435081652f46c4089cbbcd1a45d.png" alt="Memory Photo" class="polaroid-img" />
+              </div>
+              <div class="polaroid-caption" id="passcode-polaroid-note">Happy Birthday! ❤️</div>
+            </div>
+          </div>
+
+          <!-- Right: Keypad Card -->
+          <div class="keypad-card" id="keypad-card">
+            <!-- Ribbon Bow on Top Right -->
+            <img src="assets/images/a9b2fd4d803537659a437577995dca43.png" class="ribbon-bow" alt="" />
+            
+            <div class="keypad-header">
+              <div class="lock-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h2 class="keypad-title">Enter passcode</h2>
+            </div>
+
+            <!-- 4-digit Asterisk Slots -->
+            <div class="pin-display" id="pin-display">
+              <div class="pin-slot" data-index="0"></div>
+              <div class="pin-slot" data-index="1"></div>
+              <div class="pin-slot" data-index="2"></div>
+              <div class="pin-slot" data-index="3"></div>
+            </div>
+
+            <!-- Keypad Grid -->
+            <div class="keypad-grid" id="keypad-grid">
+              <button class="key-btn" data-key="1">1</button>
+              <button class="key-btn" data-key="2">2</button>
+              <button class="key-btn" data-key="3">3</button>
+              <button class="key-btn" data-key="4">4</button>
+              <button class="key-btn" data-key="5">5</button>
+              <button class="key-btn" data-key="6">6</button>
+              <button class="key-btn" data-key="7">7</button>
+              <button class="key-btn" data-key="8">8</button>
+              <button class="key-btn" data-key="9">9</button>
+              <button class="key-btn key-special" data-key="*">*</button>
+              <button class="key-btn" data-key="0">0</button>
+              <button class="key-btn key-special" data-key="#">#</button>
+              <button class="key-btn key-clear" data-key="clear" title="Clear">⌫</button>
+              <button class="key-btn key-enter" data-key="enter" id="btn-enter-passcode">Enter</button>
+            </div>
+            <div class="keypad-hint">Hint: Your special date (e.g. 1204) or click Enter ✨</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 5: WRONG PASSCODE SCREEN             -->
+      <!-- ========================================== -->
+      <section id="slide-wrong-passcode" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+        
+        <div class="content-box">
+          <div class="cat-gif-frame">
+            <img src="assets/images/d06c4a481034f2325da9010e7d6704fa.gif" alt="Wrong Passcode Cat" class="animated-gif" />
+          </div>
+          <h1 class="slide-title title-danger">Wrong Passcode !! 🙈</h1>
+          <p class="slide-sub">Oopsie! That's not the secret birthday code!</p>
+          <button id="btn-wrong-passcode-retry" class="cute-btn btn-primary btn-bounce">
+            <span>TRY AGAIN</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 6: WANNA SEE YOUR SURPRISE?          -->
+      <!-- ========================================== -->
+      <section id="slide-surprise" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+        
+        <div class="content-box">
+          <div class="mascot-frame">
+            <img src="assets/images/3a671a6dfc5faa2d87a4b208f50bb90a.png" alt="Cute Bear" class="mascot-img pulse-anim" />
+          </div>
+          <h1 class="slide-title">Wanna see your surprise? 🎁✨</h1>
+          <div class="btn-group">
+            <button id="btn-surprise-yes" class="cute-btn btn-yes">
+              <span>YES ! 🥰</span>
+            </button>
+            <button id="btn-surprise-no" class="cute-btn btn-no">
+              <span>NO 😜</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 7: HOW DARE YOU CLICK NO !           -->
+      <!-- ========================================== -->
+      <section id="slide-how-dare-you" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+        
+        <div class="content-box">
+          <div class="cat-gif-frame">
+            <img src="assets/images/bbd46bb7feaae5804098b672ba73435b.gif" alt="Angry Kitty" class="animated-gif" />
+          </div>
+          <h1 class="slide-title title-shake">How dare you click NO ! 😾</h1>
+          <p class="slide-sub">You don't get to say no on your birthday! Try again!</p>
+          <button id="btn-how-dare-retry" class="cute-btn btn-primary btn-bounce">
+            <span>TRY AGAIN 🥺</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 4: 12:00 AM BIRTHDAY SPREAD (Canva Page 8) -->
+      <!-- ========================================== -->
+      <section id="slide-bday-spread" class="slide" aria-label="Happy Birthday 12:00 AM Spread">
+        <!-- Torn Gingham Corners -->
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <!-- Sparkle Stickers -->
+        <img src="assets/images/36390bb80030bd93bab742df3a946f5d.png" class="sparkle-sticker star-1" alt="" />
+        <img src="assets/images/0099aefeea146e88918db1a9b45b5390.png" class="sparkle-sticker star-2" alt="" />
+
+        <div class="bday-spread">
+          <!-- Left: Tilted Portrait Polaroid with Washi Tape and Newspaper-Cutout Ransom Badges -->
+          <div class="bday-left">
+            <div class="my-boy-frame">
+              <div class="washi-tape tape-top"></div>
+              <!-- Ransom Cutout MY BOY & MOI Badges -->
+              <div class="ransom-badge ransom-top" id="myBoyBadge">
+                <span class="ransom-letter bg-navy">M</span>
+                <span class="ransom-letter bg-mid">Y</span>
+                <span class="ransom-letter bg-white-border" style="margin-left: 4px;">B</span>
+                <span class="ransom-letter bg-navy">O</span>
+                <span class="ransom-letter bg-mid">Y</span>
+              </div>
+              <div class="ransom-badge ransom-bottom" id="moiBadge">
+                <span class="ransom-letter bg-mid">M</span>
+                <span class="ransom-letter bg-white-border">O</span>
+                <span class="ransom-letter bg-navy">I</span>
+              </div>
+              <img id="imgSpread" class="polaroid-img" src="assets/images/8f4399ac68b4198a5ef2dcbb0eec4224.jpg" alt="Birthday boy portrait" />
+            </div>
+          </div>
+
+          <!-- Right: Bunting, HAPPY BIRTHDAY Cutouts, Subtitle, CTA Button, Raccoon Sticker -->
+          <div class="bday-right">
+            <!-- Hanging SVG Pennant Bunting Banner -->
+            <svg class="bunting-svg" width="310" height="68" viewBox="0 0 310 68" fill="none" aria-hidden="true">
+              <path d="M8 10 Q155 48 302 10" stroke="#1c314a" stroke-width="2.5"/>
+              <polygon points="35,17 55,22 42,40" fill="#4878ab"/>
+              <polygon points="88,26 110,29 96,48" fill="#d7e6f5" stroke="#1c314a" stroke-width="1.5"/>
+              <polygon points="145,31 167,31 156,51" fill="#1c314a"/>
+              <polygon points="202,27 224,24 214,44" fill="#d7e6f5" stroke="#1c314a" stroke-width="1.5"/>
+              <polygon points="255,18 275,13 268,34" fill="#4878ab"/>
+            </svg>
+
+            <!-- Cutout Letters spelling HAPPY BIRTHDAY -->
+            <div class="cutout-letters" aria-label="HAPPY BIRTHDAY">
+              <span class="cutout-char dark">H</span>
+              <span class="cutout-char mid">A</span>
+              <span class="cutout-char light">P</span>
+              <span class="cutout-char gingham">P</span>
+              <span class="cutout-char dark">Y</span>
+              <span class="cutout-break"></span>
+              <span class="cutout-char light">B</span>
+              <span class="cutout-char mid">I</span>
+              <span class="cutout-char gingham">R</span>
+              <span class="cutout-char dark">T</span>
+              <span class="cutout-char light">H</span>
+              <span class="cutout-char mid">D</span>
+              <span class="cutout-char dark">A</span>
+              <span class="cutout-char gingham">Y</span>
+            </div>
+
+            <p class="hand-sub bday-time-sub" id="bdaySubtitle">
+              12:00 AM — Officially your special day! 💙
+            </p>
+
+            <button class="cute-btn btn-primary btn-bounce" id="btn-bday-celebrate" type="button">
+              <span>Let's Celebrate →</span>
+            </button>
+
+            <!-- Cute Party Raccoon Sticker in Bottom Right Corner (video 0:26 match) -->
+            <img class="spread-raccoon-sticker" src="assets/images/9e7f1cf7519b99cb4047562725440301.png" alt="Party raccoon sticker" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 5: BLOW OUT THE CANDLES !!!          -->
+      <!-- ========================================== -->
+      <section id="slide-candles" class="slide" aria-label="Interactive birthday cake">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="candles-content">
+          <h1 class="slide-title candles-title" id="cakeHeading">Blow out the Candles !!! 🎂</h1>
+          <p class="candles-subtitle" id="cakeSub">✨ Click the cake to make a wish &amp; blow out the candles! ✨</p>
+          
+          <div class="cake-stage-wrapper">
+            <!-- Left Cheering Chihuahua Pair (pops up on candle blowout) -->
+            <div class="chihuahua-pair left-pair">
+              <img class="cheering-chihuahua" id="dogLeft" src="assets/images/e0ae3e6a46d5f4d81db61797c53d1c94.png" alt="Cheering party dog" />
+              <img class="cheering-chihuahua" id="dogLeft2" src="assets/images/b58dc6a9766481bf222b681c7176d78d.png" alt="Cheering party dog" />
+            </div>
+
+            <!-- Photorealistic Vintage Cake with 8 Interactive Flickering Candle Flames -->
+            <div class="cake-interactive" id="cake-container" role="button" tabindex="0" title="Click cake to blow candles!" aria-label="Blow out candles">
+              <img src="assets/images/09a443278b31bd865cae4542ae22295b.png" alt="Birthday Cake" class="cake-photo-img" id="cake-img" />
+              <div class="flame-overlay-layer" id="candlesGroup">
+                <span class="real-flame" style="left: 34%; top: 11%;"></span>
+                <span class="real-flame" style="left: 39%; top: 14%;"></span>
+                <span class="real-flame" style="left: 43%; top: 9%;"></span>
+                <span class="real-flame" style="left: 49%; top: 8%;"></span>
+                <span class="real-flame" style="left: 55%; top: 9%;"></span>
+                <span class="real-flame" style="left: 59%; top: 13%;"></span>
+                <span class="real-flame" style="left: 63%; top: 10%;"></span>
+                <span class="real-flame" style="left: 66%; top: 12%;"></span>
+              </div>
+            </div>
+
+            <!-- Right Cheering Chihuahua Pair -->
+            <div class="chihuahua-pair right-pair">
+              <img class="cheering-chihuahua flip" id="dogRight1" src="assets/images/b58dc6a9766481bf222b681c7176d78d.png" alt="Cheering party dog" />
+              <img class="cheering-chihuahua flip" id="dogRight" src="assets/images/e0ae3e6a46d5f4d81db61797c53d1c94.png" alt="Cheering party dog" />
+            </div>
+          </div>
+          
+          <div class="blow-hint-tag" id="cakeHintText">🎂 Click me to blow candles !! 💨</div>
+
+          <div class="cake-action-btns">
+            <button class="cute-btn btn-secondary sm" id="micBlowBtn" type="button">🎤 Blow Into Mic</button>
+            <button class="cute-btn btn-primary sm" id="afterCakeBtn" type="button" style="display: none;">
+              <span>Next: Choose Gifts! 🎁</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 10: YAY!! HAPPY BIRTHDAYYY           -->
+      <!-- ========================================== -->
+      <section id="slide-celebration" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="content-box">
+          <div class="celebration-badge">🎉 WISH GRANTED! 🎉</div>
+          <h1 class="slide-title celebration-title">Yay!! Happy Birthdayyy! 🥳💖</h1>
+          <div class="cake-celebrate-wrap">
+            <img src="assets/images/b1dee7f2cea3aa95b9dc54d5a8ccc1fa.png" alt="Blown Out Cake" class="cake-blown-img" />
+          </div>
+          <p class="slide-sub">May all your sweetest dreams and secret wishes come true!</p>
+          <button id="btn-to-accept-gifts" class="cute-btn btn-primary btn-bounce">
+            <span>Next: Choose Gifts! 🎁</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 11: ACCEPT YOUR GIFTS?               -->
+      <!-- ========================================== -->
+      <section id="slide-accept-gifts" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="content-box">
+          <div class="teddy-frame">
+            <img src="assets/images/a5bdfde35d03ce2bd14f553ed2249355.png" alt="Cute Teddy" class="teddy-img pulse-anim" />
+          </div>
+          <h1 class="slide-title">Accept your gifts? 💝</h1>
+          <div class="btn-group">
+            <button id="btn-accept-yes" class="cute-btn btn-yes">
+              <span>YES ! 😍</span>
+            </button>
+            <button id="btn-accept-no" class="cute-btn btn-no">
+              <span>NO 🥺</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 12: PLEASE TRY AGAIN                 -->
+      <!-- ========================================== -->
+      <section id="slide-crying-cat" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <!-- Disco Balls on sides -->
+        <img src="assets/images/b387aa4adfcc7da0a7b93c966944bd9b.png" class="disco-ball disco-left" alt="" />
+        <img src="assets/images/b387aa4adfcc7da0a7b93c966944bd9b.png" class="disco-ball disco-right" alt="" />
+
+        <div class="content-box">
+          <div class="crying-cat-frame">
+            <img src="assets/images/0065f633b36ed9f79b6383af28e2926d.png" alt="Crying Cat" class="crying-cat-img" />
+          </div>
+          <h1 class="slide-title">Please try again... 😿</h1>
+          <p class="slide-sub">Don't break my heart on your birthday! Please accept!</p>
+          <button id="btn-crying-okay" class="cute-btn btn-cloud btn-bounce">
+            <span>OKAY ☁️</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 13: YAY! CHOOSE YOUR GIFT            -->
+      <!-- ========================================== -->
+      <section id="slide-choose-gift" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <!-- Top Stickers: Cocktail & Kiss -->
+        <img src="assets/images/09a443278b31bd865cae4542ae22295b.png" class="sticker-cocktail" alt="" />
+        <img src="assets/images/9bc20e701d0b7f84b0cc834e027db27d.png" class="sticker-kiss" alt="" />
+
+        <div class="gifts-content">
+          <h1 class="slide-title gifts-header-title">Yay! Choose your gift 🎁✨</h1>
+          
+          <div class="gifts-grid">
+            <!-- Gift 1: Letter -->
+            <div class="gift-card" id="card-gift-1">
+              <div class="gift-img-frame">
+                <img src="assets/images/84f183d31e507d60154c8f05c853342b.png" alt="Love Letter Envelope" class="gift-icon-img" />
+              </div>
+              <button class="gift-label-btn">Gift 1</button>
+              <div class="gift-desc">A Special Letter 💌</div>
+            </div>
+
+            <!-- Gift 2: Bouquet -->
+            <div class="gift-card" id="card-gift-2">
+              <div class="gift-img-frame">
+                <img src="assets/images/ced864723a93b0b35f4b2fc51ccf1656.png" alt="Flower Bouquet" class="gift-icon-img" />
+              </div>
+              <button class="gift-label-btn">Gift 2</button>
+              <div class="gift-desc">Fresh Flowers 💐</div>
+            </div>
+
+            <!-- Gift 3: Scrapbook -->
+            <div class="gift-card" id="card-gift-3">
+              <div class="gift-img-frame">
+                <img src="assets/images/d8408c52ddb203fde5ed3224b5364b42.png" alt="Scrapbook Present" class="gift-icon-img" />
+              </div>
+              <button class="gift-label-btn">Gift 3</button>
+              <div class="gift-desc">Our Scrapbook 📖</div>
+            </div>
+          </div>
+          
+          <div class="gifts-tip">💡 You can open and view all three gifts!</div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 14: GIFT 1 (ROMANTIC LOVE LETTER)    -->
+      <!-- ========================================== -->
+      <section id="slide-letter" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="letter-stage">
+          <div class="parchment-sheet">
+            <div class="wax-seal-badge">💌</div>
+            <h2 class="letter-greeting" id="letter-greeting">My Dearest Birthday Person,</h2>
+            <div class="letter-body-text" id="letter-content">
+              I've been trying to find the right words to tell you how much you mean to me, and I keep coming back to how lucky I am to have you in my life. You bring so much light, laughter, and calm into my world every single day. Seeing your smile makes everything feel right. I hope this birthday brings you all the joy, love, and wonder you give to everyone around you!
+            </div>
+            <div class="letter-signoff">
+              <span>With all my love,</span>
+              <strong id="letter-author">Forever Yours ❤️</strong>
+            </div>
+          </div>
+          <button id="btn-back-from-letter" class="cute-btn btn-secondary nav-back-btn">
+            <span>← Back to Gifts</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 15: GIFT 2 (FLOWERS BOUQUET)         -->
+      <!-- ========================================== -->
+      <section id="slide-flowers" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="flowers-stage">
+          <h1 class="slide-title flowers-title">Some flowers for you!! 🌸💐</h1>
+          <div class="flower-gallery">
+            <div class="flower-frame polaroid-style tilt-left">
+              <img src="assets/images/5087d25b38d46f06598fa2cf8e331598.jpg" alt="Flower 1" class="flower-img" />
+              <div class="flower-caption">Fresh blooms 🌷</div>
+            </div>
+            <div class="flower-frame polaroid-style tilt-center">
+              <img src="assets/images/b2e0e4968c920cb3ff6b64472a80d770.jpg" alt="Flower 2" class="flower-img" />
+              <div class="flower-caption">For the prettiest smile 🌼</div>
+            </div>
+            <div class="flower-frame polaroid-style tilt-right">
+              <img src="assets/images/2d26fa6f4f5d96b95ccd30659d1fb414.jpg" alt="Flower 3" class="flower-img" />
+              <div class="flower-caption">Forever blooming 🌹</div>
+            </div>
+          </div>
+          <p class="flowers-note">"Like these flowers, you bring color, fragrance, and happiness wherever you go!"</p>
+          <button id="btn-back-from-flowers" class="cute-btn btn-secondary nav-back-btn">
+            <span>← Back to Gifts</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 16: GIFT 3 (SCRAPBOOK ALBUM)         -->
+      <!-- ========================================== -->
+      <section id="slide-scrapbook" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="scrapbook-stage">
+          <!-- Double Page Open Scrapbook Album -->
+          <div class="scrapbook-book" id="scrapbook-book">
+            <!-- Binder clips on sides -->
+            <div class="binder-clip clip-left"></div>
+            <div class="binder-clip clip-right"></div>
+            
+            <!-- Left Page -->
+            <div class="book-page page-left">
+              <div class="page-corner-tape tape-tl"></div>
+              
+              <!-- Memory Polaroid 1 -->
+              <div class="memory-polaroid" id="scrapbook-polaroid-1" title="Click to enlarge photo">
+                <div class="polaroid-pin">📌</div>
+                <img id="scrapbook-photo-1" src="assets/images/b0741a182561ced2d924951b42ac6dc6.jpg" alt="Memory Photo 1" class="polaroid-photo" />
+                <div class="polaroid-note" id="scrapbook-caption-1">Our golden memories ✨</div>
+              </div>
+
+              <!-- Sticky Note 1 -->
+              <div class="sticky-note sticky-blue" id="scrapbook-sticky-1">
+                <p id="scrapbook-note-1">"The world is a little brighter because you're in it."</p>
+              </div>
+
+              <div class="tag-birthday-boy">Birthday Star ⭐</div>
+            </div>
+
+            <!-- Page Center Spine Rings -->
+            <div class="book-spine">
+              <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+              <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+            </div>
+
+            <!-- Right Page -->
+            <div class="book-page page-right">
+              <div class="page-corner-tape tape-tr"></div>
+              
+              <!-- Disco ball & stars -->
+              <img src="assets/images/b387aa4adfcc7da0a7b93c966944bd9b.png" class="scrapbook-disco" alt="" />
+              
+              <!-- Dedication Card -->
+              <div class="dedication-card">
+                <h3 class="dedication-header">Happy Birthday to the most special person! 🎂</h3>
+                <p class="dedication-text" id="scrapbook-dedication-text">
+                  Happy birthday to the person who makes my world brighter. I don't say it enough, but I'm endlessly grateful for your kindness, your strength, and the way you make every moment feel magical.
+                </p>
+              </div>
+
+              <!-- Sticky Note 2 -->
+              <div class="sticky-note sticky-yellow" id="scrapbook-sticky-2">
+                <p id="scrapbook-note-2">"You have a way of making ordinary moments feel truly special."</p>
+              </div>
+
+              <!-- Party Raccoon Dancing Sticker -->
+              <div class="raccoon-sticker-frame">
+                <img src="assets/images/0099aefeea146e88918db1a9b45b5390.png" alt="Party Mascot" class="raccoon-sticker bounce-anim" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrapbook Navigation Bar -->
+          <div class="scrapbook-controls">
+            <button id="btn-back-from-scrapbook" class="cute-btn btn-secondary">
+              <span>← Back to Gifts</span>
+            </button>
+            <button id="btn-to-real-gift" class="cute-btn btn-special-glow btn-bounce">
+              <span>Okay, joke aside... Open REAL Gifts! 🎁✨</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 17: REAL GIFTS (MYSTERY BOXES)       -->
+      <!-- ========================================== -->
+      <section id="slide-real-gifts" class="slide">
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham top-left" alt="" />
+        <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" class="torn-gingham bottom-right" alt="" />
+
+        <div class="real-gifts-stage">
+          <div class="real-gifts-header">
+            <h1 class="slide-title real-title">Okay, jokes aside... this is your REAL gift! 💝</h1>
+            <p class="real-sub">Open the two mystery boxes below one-by-one!</p>
+          </div>
+
+          <div class="mystery-boxes-row">
+            <!-- Mystery Box 1: Social Profiles -->
+            <div class="mystery-box-card" id="mystery-box-1">
+              <div class="box-visual" id="box-1-visual">
+                <img src="assets/images/mystery-box-1.svg" alt="Mystery Box 1" class="mystery-box-svg" width="96" height="96" />
+                <div class="box-lid">
+                  <div class="box-ribbon-bow">🎀</div>
+                </div>
+                <div class="box-body">
+                  <span class="box-number">Box 1</span>
+                  <div class="box-instruction">Click to Unwrap 🎁</div>
+                </div>
+              </div>
+              <div class="box-revealed-content" id="box-1-revealed" style="display: none;">
+                <div class="revealed-tag">✨ Unlocked: Stay Connected! ✨</div>
+                <h3 class="revealed-title">My Socials & Contacts</h3>
+                <div class="social-links-list">
+                  <div class="social-row">
+                    <span class="social-icon"><img src="assets/images/icon-instagram.svg" alt="Instagram" class="social-icon-img" width="28" height="28" /></span>
+                    <div class="social-info">
+                      <span class="social-platform">INSTAGRAM</span>
+                      <strong class="social-handle" id="social-val-insta">@birthday.love</strong>
+                    </div>
+                    <button class="copy-btn" data-copy="social-val-insta">Copy</button>
+                    <a href="https://instagram.com" target="_blank" rel="noopener" class="visit-btn" id="social-link-insta">Visit</a>
+                  </div>
+                  <div class="social-row">
+                    <span class="social-icon"><img src="assets/images/icon-snapchat.svg" alt="Snapchat" class="social-icon-img" width="28" height="28" /></span>
+                    <div class="social-info">
+                      <span class="social-platform">SNAPCHAT</span>
+                      <strong class="social-handle" id="social-val-snap">@bday_vibes</strong>
+                    </div>
+                    <button class="copy-btn" data-copy="social-val-snap">Copy</button>
+                    <a href="https://snapchat.com" target="_blank" rel="noopener" class="visit-btn" id="social-link-snap">Visit</a>
+                  </div>
+                  <div class="social-row">
+                    <span class="social-icon"><img src="assets/images/icon-gmail.svg" alt="Gmail" class="social-icon-img" width="28" height="28" /></span>
+                    <div class="social-info">
+                      <span class="social-platform">GMAIL</span>
+                      <strong class="social-handle" id="social-val-email">birthday.wishes@love.com</strong>
+                    </div>
+                    <button class="copy-btn" data-copy="social-val-email">Copy</button>
+                    <a href="mailto:birthday.wishes@love.com" class="visit-btn" id="social-link-email">Mail</a>
+                  </div>
+                  <div class="social-row">
+                    <span class="social-icon"><img src="assets/images/icon-whatsapp.svg" alt="WhatsApp" class="social-icon-img" width="28" height="28" /></span>
+                    <div class="social-info">
+                      <span class="social-platform">WHATSAPP</span>
+                      <strong class="social-handle" id="social-val-wa">+91 98765 43210</strong>
+                    </div>
+                    <button class="copy-btn" data-copy="social-val-wa">Copy</button>
+                    <a href="https://wa.me/" target="_blank" rel="noopener" class="visit-btn" id="social-link-wa">Chat</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mystery Box 2: Wishes Board -->
+            <div class="mystery-box-card" id="mystery-box-2">
+              <div class="box-visual" id="box-2-visual">
+                <img src="assets/images/mystery-box-2.svg" alt="Mystery Box 2" class="mystery-box-svg" width="96" height="96" />
+                <div class="box-lid">
+                  <div class="box-ribbon-bow">🎁</div>
+                </div>
+                <div class="box-body">
+                  <span class="box-number">Box 2</span>
+                  <div class="box-instruction">Click to Unwrap 🌟</div>
+                </div>
+              </div>
+              <div class="box-revealed-content" id="box-2-revealed" style="display: none;">
+                <div class="revealed-tag">🎉 Unlocked: Birthday Love! 🎉</div>
+                <h3 class="revealed-title">Friends & Family Wishes Board</h3>
+                <div class="wishes-feed" id="wishes-feed">
+                  <!-- Dynamically populated from Supabase / localStorage -->
+                  <div class="wish-item">
+                    <div class="wish-header">
+                      <strong class="wisher-name">Aarav Sharma</strong>
+                      <span class="wisher-bday">🎂 Nov 20</span>
+                    </div>
+                    <p class="wish-message">"Happy Birthday bhai! May this year bring you crazy success, health, and happiness! Stay blessed always!"</p>
+                  </div>
+                  <div class="wish-item">
+                    <div class="wish-header">
+                      <strong class="wisher-name">Priya Patel</strong>
+                      <span class="wisher-bday">🎂 Apr 15</span>
+                    </div>
+                    <p class="wish-message">"Happiest birthday to the sweetest soul! Keep spreading your wonderful smile and positivity everywhere! ✨"</p>
+                  </div>
+                </div>
+
+                <!-- Add Your Name Prompt -->
+                <div class="add-wish-prompt" id="wish-prompt-section">
+                  <p class="prompt-text">Want your name on this board too? 💖</p>
+                  <div class="prompt-buttons">
+                    <button id="btn-wish-yes" class="cute-btn btn-yes-sm">YES! Add Me</button>
+                    <button id="btn-wish-no" class="cute-btn btn-no-sm">Just Reading</button>
+                  </div>
+                </div>
+
+                <!-- Wish Submission Form -->
+                <form id="wish-form" class="wish-form" style="display: none;">
+                  <div class="form-row">
+                    <input type="text" id="wish-input-name" placeholder="Your Name" required class="cute-input" maxlength="60" />
+                    <input type="date" id="wish-input-bday" title="Your Birthday Date" required class="cute-input" />
+                  </div>
+                  <textarea id="wish-input-text" placeholder="Write your heartfelt birthday wish here..." required class="cute-textarea" maxlength="500"></textarea>
+                  
+                  <!-- Optional Photo Upload with Preview -->
+                  <div class="wish-file-wrap">
+                    <label for="wish-input-photo" class="wish-file-label" id="wish-file-label">
+                      <span class="file-icon">📷</span>
+                      <span id="wish-photo-label-text">Attach cute photo (optional)</span>
+                    </label>
+                    <input type="file" id="wish-input-photo" accept="image/*" class="wish-file-input" />
+                    <div id="wish-photo-preview-wrap" class="wish-photo-preview-wrap" style="display: none;">
+                      <img id="wish-photo-preview-img" src="" alt="Wish Preview" class="wish-preview-thumb" />
+                      <button type="button" id="btn-remove-wish-photo" class="btn-remove-photo" title="Remove attached photo">✕</button>
+                    </div>
+                  </div>
+
+                  <button type="submit" id="btn-submit-wish" class="cute-btn btn-primary btn-submit">
+                    <span>Send Birthday Wish 💌</span>
+                  </button>
+                  <div id="wish-form-status" class="wish-form-status"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer Controls -->
+          <div class="real-gifts-footer">
+            <button id="btn-back-to-scrapbook" class="cute-btn btn-secondary">
+              <span>← Back to Scrapbook</span>
+            </button>
+            <button id="btn-final-restart" class="cute-btn btn-secondary">
+              <span>↺ Restart Experience</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Fullscreen Photo Lightbox Modal -->
+  <div id="photo-modal" class="photo-modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close" aria-label="Close Photo">✕</button>
+      <div class="modal-polaroid-frame">
+        <img id="modal-photo-img" src="" alt="Enlarged Memory Photo" class="modal-photo" />
+        <div id="modal-photo-caption" class="modal-caption"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase Client & App Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

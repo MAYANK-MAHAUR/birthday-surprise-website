@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Birthday Website Creator ✨ | Custom Celebrations</title>
+  
+  <!-- Fonts -->
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/84f183d31e507d60154c8f05c853342b.png">
+
+  <!-- Admin Scoped Styles (Tactile Scrapbook Theme & Lock Screen) -->
+  <style>
+    /* Admin Stage & Layout */
+    .admin-body {
+      overflow-y: auto !important;
+      min-height: 100vh;
+      background-color: #8bb4e7;
+      background-image: url('assets/images/f14d08c44c03633f2a5d6945b48e3d52.png');
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'Fredoka', -apple-system, sans-serif;
+      color: #16263d;
+      padding: 30px 16px 80px 16px;
+    }
+
+    .admin-stage {
+      max-width: 980px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .admin-frame {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 44px 48px;
+      box-shadow: 0 20px 60px rgba(18, 38, 68, 0.22);
+      border: 4px solid #fff;
+      position: relative;
+    }
+
+    /* Corner Tapes */
+    .corner-tape {
+      position: absolute;
+      width: 110px;
+      height: 48px;
+      object-fit: contain;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .corner-tl { top: -16px; left: -20px; transform: rotate(-25deg); }
+    .corner-tr { top: -16px; right: -20px; transform: rotate(25deg); }
+    .corner-bl { bottom: -16px; left: -20px; transform: rotate(25deg); }
+    .corner-br { bottom: -16px; right: -20px; transform: rotate(-25deg); }
+
+    /* Admin Header */
+    .admin-header {
+      margin-bottom: 32px;
+      border-bottom: 2px dashed #d6e4f7;
+      padding-bottom: 24px;
+    }
+
+    .admin-header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .admin-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #3b74b4;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 8px 16px;
+      background: #f0f6ff;
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+    .admin-back-link:hover {
+      background: #3b74b4;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .admin-lock-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff0f3;
+      color: #e35467;
+      border: 2px solid #ffd1dc;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .admin-lock-btn:hover {
+      background: #e35467;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .admin-title-wrap {
+      text-align: center;
+    }
+
+    .admin-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1a3356;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle-hand {
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      color: #5c789e;
+    }
+
+    /* Form Cards */
+    .form-card {
+      background: #fbfdff;
+      border: 2px solid #e1edfc;
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 6px 18px rgba(22, 42, 70, 0.05);
+      position: relative;
+    }
+
+    .form-section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #24436e;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: #728ba8;
+      margin-bottom: 20px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2b456b;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="url"],
+    .form-group select,
+    .form-group textarea {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 2px solid #cadbf0;
+      background: #ffffff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 15px;
+      color: #16263d;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #3b74b4;
+      box-shadow: 0 0 0 4px rgba(59, 116, 180, 0.15);
+    }
+
+    .field-hint {
+      font-size: 12px;
+      color: #8fa7c7;
+    }
+
+    /* Photo Upload Box & Previews */
+    .photo-upload-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-top: 6px;
+    }
+
+    .photo-input-stack {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .file-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .custom-file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #eef5fc;
+      border: 2px dashed #8bb4e7;
+      border-radius: 10px;
+      color: #3b74b4;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .custom-file-btn:hover {
+      background: #e1efff;
+      border-color: #3b74b4;
+    }
+
+    .file-input-real {
+      display: none;
+    }
+
+    .upload-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .upload-badge.uploading {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .upload-badge.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .upload-badge.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .img-preview {
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      background: #f0f4fa;
+      border: 2px solid #d4e2f5;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(22, 42, 70, 0.08);
+    }
+
+    .img-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-preview-empty {
+      font-size: 11px;
+      color: #9cb5d4;
+      text-align: center;
+      padding: 6px;
+    }
+
+    /* Submit Bar */
+    .admin-submit-bar {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .admin-create-btn {
+      padding: 16px 44px;
+      font-size: 19px;
+      font-weight: 700;
+      background: #3b74b4;
+      color: #ffffff;
+      border-radius: 40px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #285487, 0 12px 24px rgba(59, 116, 180, 0.35);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .admin-create-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 9px 0 #285487, 0 16px 28px rgba(59, 116, 180, 0.4);
+      background: #32649d;
+    }
+    .admin-create-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 #285487;
+    }
+
+    .admin-status-text {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .status-loading { color: #3b74b4; }
+    .status-success { color: #28a745; }
+    .status-error { color: #dc3545; }
+
+    /* Share Result Card */
+    .share-card {
+      background: #ffffff;
+      border: 3px solid #6cb2eb;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .share-link-box {
+      display: flex;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .share-link-box input {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a3356;
+      background: #f7faff;
+      border: 2px solid #b8d5fa;
+      border-radius: 14px;
+      outline: none;
+    }
+
+    .share-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .cute-btn-pink {
+      background: #f77088;
+      color: #fff;
+      box-shadow: 0 4px 0 #d14d64;
+    }
+    .cute-btn-pink:hover { background: #e05e75; }
+
+    .cute-btn-navy {
+      background: #182b49;
+      color: #fff;
+      box-shadow: 0 4px 0 #0d1a2d;
+    }
+    .cute-btn-navy:hover { background: #223c66; }
+
+    .cute-btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+      box-shadow: 0 4px 0 #1b9b4b;
+    }
+    .cute-btn-whatsapp:hover { background: #20bd5a; }
+
+    /* ==========================================================================
+       MASTER PASSCODE LOCK SCREEN OVERLAY
+       ========================================================================== */
+    .admin-auth-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(18, 38, 68, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .admin-auth-gate.unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .admin-gate-card {
+      position: relative;
+      background: #ffffff;
+      padding: 38px 42px;
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+      border: 4px solid #ffffff;
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .admin-gate-header {
+      margin-bottom: 20px;
+    }
+
+    .admin-gate-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a3356;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .admin-gate-subtitle {
+      font-size: 14px;
+      color: #6a8bb5;
+      max-width: 320px;
+    }
+
+    .admin-gate-hidden-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+
+    .admin-keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .admin-unlock-btn {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      font-size: 17px;
+    }
+
+    .admin-gate-error {
+      color: #e35467;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    .admin-gate-hint {
+      font-size: 12px;
+      color: #9cb5d4;
+      margin-top: 16px;
+    }
+
+    /* Keypad Shake Animation */
+    .shake-anim {
+      animation: shake-keypad 0.45s ease-in-out;
+    }
+
+    @keyframes shake-keypad {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-12px); }
+      40%, 80% { transform: translateX(12px); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .admin-frame {
+        padding: 24px 20px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      .share-link-box {
+        flex-direction: column;
+      }
+      .admin-gate-card {
+        padding: 30px 24px;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Master Passcode Lock Screen Overlay (Gates access to creator form) -->
+  <div id="admin-auth-gate" class="admin-auth-gate admin-passcode-gate" data-testid="admin-auth-overlay">
+    <div id="admin-auth-overlay" class="admin-gate-card">
+      <div class="washi-tape tape-top"></div>
+      <img src="assets/images/a9b2fd4d803537659a437577995dca43.png" class="ribbon-bow" alt="" aria-hidden="true">
+      
+      <div class="admin-gate-header">
+        <div class="lock-icon-wrap" aria-hidden="true">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#3b74b4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 class="admin-gate-title">Admin Portal 🔒</h2>
+        <p class="admin-gate-subtitle">Enter Master Passcode to manage &amp; create birthday celebrations</p>
+      </div>
+
+      <!-- PIN Display Slots -->
+      <div class="pin-display" id="admin-pin-display" aria-label="Passcode display">
+        <div class="pin-slot" data-index="0"></div>
+        <div class="pin-slot" data-index="1"></div>
+        <div class="pin-slot" data-index="2"></div>
+        <div class="pin-slot" data-index="3"></div>
+      </div>
+
+      <!-- Hidden standard input for physical keyboard typing -->
+      <input type="password" id="admin-gate-passcode" class="admin-gate-hidden-input" maxlength="4" autocomplete="off" inputmode="numeric" placeholder="PIN" aria-label="Master Passcode Input">
+
+      <!-- Tactile Scrapbook Keypad Grid -->
+      <div class="keypad-grid admin-keypad-grid">
+        <button type="button" class="key-btn" data-key="1">1</button>
+        <button type="button" class="key-btn" data-key="2">2</button>
+        <button type="button" class="key-btn" data-key="3">3</button>
+        <button type="button" class="key-btn" data-key="4">4</button>
+        <button type="button" class="key-btn" data-key="5">5</button>
+        <button type="button" class="key-btn" data-key="6">6</button>
+        <button type="button" class="key-btn" data-key="7">7</button>
+        <button type="button" class="key-btn" data-key="8">8</button>
+        <button type="button" class="key-btn" data-key="9">9</button>
+        <button type="button" class="key-btn key-special key-clear" id="btn-gate-clear" data-action="clear" title="Clear PIN">C</button>
+        <button type="button" class="key-btn" data-key="0">0</button>
+        <button type="button" class="key-btn key-special" id="btn-gate-backspace" data-action="backspace" title="Delete last digit">⌫</button>
+      </div>
+
+      <button type="button" id="btn-unlock-admin" class="cute-btn btn-primary admin-unlock-btn">
+        Unlock Creator Form 🔓
+      </button>
+
+      <p id="admin-gate-error" class="admin-gate-error" role="alert" style="display: none;"></p>
+      <p class="admin-gate-hint">Default Master Passcode: <strong>1204</strong></p>
+    </div>
+  </div>
+
+  <main class="scrapbook-stage admin-stage">
+    <div class="scrapbook-frame admin-frame">
+      
+      <!-- Torn paper gingham corner tapes -->
+      <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" alt="" class="corner-tape corner-tl" aria-hidden="true">
+      <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" alt="" class="corner-tape corner-tr" aria-hidden="true">
+      <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" alt="" class="corner-tape corner-bl" aria-hidden="true">
+      <img src="assets/images/936ff959f65e2d74a622d9ba87ce4b27.png" alt="" class="corner-tape corner-br" aria-hidden="true">
+
+      <div class="admin-container">
+        
+        <!-- Header -->
+        <header class="admin-header">
+          <div class="admin-header-nav">
+            <a href="index.html" class="admin-back-link">← Back to Site</a>
+            <button type="button" id="btn-lock-admin" class="admin-lock-btn cute-btn" title="Lock Admin Portal">
+              🔒 Lock / Exit Admin
+            </button>
+          </div>
+          <div class="admin-title-wrap">
+            <h1 class="title-crafty admin-title">Create a Custom Birthday Website 🎂✨</h1>
+            <p class="subtitle-hand">Personalize every message, photo, passcode, and song for your favorite person!</p>
+          </div>
+        </header>
+
+        <!-- Creator Form -->
+        <form id="creator-form" class="creator-form">
+
+          <!-- Section 1: The Basics -->
+          <div class="form-card">
+            <h2 class="form-section-title">1. The Basics 🎈</h2>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="admin-name">Birthday Person's Name *</label>
+                <input type="text" id="admin-name" placeholder="e.g. Sarah" maxlength="100" required>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-sender">From (Your Name / Nickname) *</label>
+                <input type="text" id="admin-sender" placeholder="e.g. Alex" maxlength="100" required>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-passcode">Secret 4-Digit Passcode *</label>
+                <input type="text" id="admin-passcode" placeholder="e.g. 1204" pattern="[0-9]{4}" maxlength="4" value="1204" required>
+                <span class="field-hint">4 digits needed to unlock the celebration site</span>
+              </div>
+
+              <div class="form-group">
+                <label for="admin-song">Background Music Choice</label>
+                <select id="admin-song" class="form-select">
+                  <option value="assets/audio/haareya.mp3" selected>🎵 Haareya (Arijit Singh)</option>
+                  <option value="assets/audio/city_of_stars.mp3">✨ City of Stars (La La Land)</option>
+                  <option value="custom">🔗 Custom Audio URL...</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width" id="group-custom-song" style="display: none;">
+                <label for="admin-custom-song-url">Custom Audio Stream URL (MP3)</label>
+                <input type="url" id="admin-custom-song-url" placeholder="https://example.com/song.mp3">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Custom Photos (Uploads & URLs) -->
+          <div class="form-card">
+            <h2 class="form-section-title">2. Memory Photos 📸</h2>
+            <p class="section-desc">Select image files from your device to upload automatically to Supabase Storage, or paste direct URLs.</p>
+
+            <div class="form-grid">
+              <!-- Photo 1: Passcode Polaroid -->
+              <div class="form-group">
+                <label for="admin-photo-polaroid">Passcode Polaroid Photo</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-polaroid" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-polaroid" class="file-input-real" accept="image/*">
+                      <span id="badge-polaroid" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-polaroid" placeholder="Or enter Image URL" value="assets/images/8893d690706f9c045b2c6e478c07636c.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-polaroid"></div>
+                </div>
+              </div>
+
+              <!-- Photo 2: Letter Polaroid -->
+              <div class="form-group">
+                <label for="admin-photo-letter">Letter Polaroid Photo</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-letter" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-letter" class="file-input-real" accept="image/*">
+                      <span id="badge-letter" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-letter" placeholder="Or enter Image URL" value="assets/images/2bd6fdb2b6bf296a351bf5c516e35238.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-letter"></div>
+                </div>
+              </div>
+
+              <!-- Photo 3: Scrapbook Photo 1 -->
+              <div class="form-group">
+                <label for="admin-photo-scrapbook-1">Scrapbook Photo 1</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-scrapbook-1" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-scrapbook-1" class="file-input-real" accept="image/*">
+                      <span id="badge-scrapbook-1" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-scrapbook-1" placeholder="Or enter Image URL" value="assets/images/b0741a182561ced2d924951b42ac6dc6.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-scrapbook-1"></div>
+                </div>
+              </div>
+
+              <!-- Photo 4: Scrapbook Photo 2 -->
+              <div class="form-group">
+                <label for="admin-photo-scrapbook-2">Scrapbook Photo 2</label>
+                <div class="photo-upload-row">
+                  <div class="photo-input-stack">
+                    <div class="file-input-wrapper">
+                      <label for="admin-file-scrapbook-2" class="custom-file-btn">📁 Choose Photo</label>
+                      <input type="file" id="admin-file-scrapbook-2" class="file-input-real" accept="image/*">
+                      <span id="badge-scrapbook-2" class="upload-badge" style="display: none;"></span>
+                    </div>
+                    <input type="text" id="admin-photo-scrapbook-2" placeholder="Or enter Image URL" value="assets/images/45aae7f5e21ba481cbe5a6bae512295a.jpg">
+                  </div>
+                  <div class="img-preview" id="preview-scrapbook-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Custom Messages & Letter -->
+          <div class="form-card">
+            <h2 class="form-section-title">3. Words from the Heart 💌</h2>
+
+            <div class="form-group full-width">
+              <label for="admin-polaroid-note">Passcode Screen Polaroid Note</label>
+              <input type="text" id="admin-polaroid-note" value="Happy Birthday ❤️">
+            </div>
+
+            <div class="form-group full-width">
+              <label for="admin-letter-text">The Love Letter (Gift 1)</label>
+              <textarea id="admin-letter-text" rows="5">I've been trying to find the right words to tell you how much you mean to me, and I keep coming back to the simplest truth: you make my ordinary days feel extraordinary.
+
+Thank you for being my favorite person to talk to, my favorite person to be quiet with, and my favorite person to build a life alongside. Every day with you feels like a gift I didn't know I needed until I had it.</textarea>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="admin-dedication-text">Scrapbook Dedication Message</label>
+              <textarea id="admin-dedication-text" rows="4">Happy birthday to the man who makes my world brighter. I'm endlessly grateful for your kindness, your strength, and the way you love me so effortlessly. I hope this new year brings you success, peace, and all the joy you give so freely to others. I love you more than words could ever capture.</textarea>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="admin-sticky-1">Sticky Note 1</label>
+                <input type="text" id="admin-sticky-1" value="The world is a little brighter because you're in it. ✨">
+              </div>
+
+              <div class="form-group">
+                <label for="admin-sticky-2">Sticky Note 2</label>
+                <input type="text" id="admin-sticky-2" value="You have a way of making ordinary moments feel special. 🌟">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Mystery Box Social Links -->
+          <div class="form-card">
+            <h2 class="form-section-title">4. Mystery Box Socials 📱</h2>
+            <p class="section-desc">Shown inside Mystery Box 1 for direct connection.</p>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="admin-social-insta">Instagram Handle</label>
+                <input type="text" id="admin-social-insta" placeholder="@yourhandle" value="@birthday.love">
+              </div>
+
+              <div class="form-group">
+                <label for="admin-social-snap">Snapchat Handle</label>
+                <input type="text" id="admin-social-snap" placeholder="@yourhandle" value="@bday_vibes">
+              </div>
+
+              <div class="form-group">
+                <label for="admin-social-email">Email Address</label>
+                <input type="email" id="admin-social-email" placeholder="you@domain.com" value="birthday.wishes@love.com">
+              </div>
+
+              <div class="form-group">
+                <label for="admin-social-wa">WhatsApp Phone Number</label>
+                <input type="text" id="admin-social-wa" placeholder="+1234567890" value="+91 98765 43210">
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="admin-submit-bar">
+            <button type="submit" id="btn-create-celebration" class="cute-btn cute-btn-pill cute-btn-blue admin-create-btn">
+              Save &amp; Generate Shareable Link 🚀✨
+            </button>
+            <p id="admin-status" class="admin-status-text" aria-live="polite"></p>
+          </div>
+
+        </form>
+
+        <!-- Result / Share Box -->
+        <div id="share-result-card" class="form-card share-card" style="display: none;">
+          <h2 class="form-section-title">🎉 Your Birthday Website is Ready!</h2>
+          <p class="section-desc">Share this magical customized link with the birthday person:</p>
+
+          <div class="share-link-box">
+            <input type="text" id="share-link-input" readonly>
+            <button id="btn-copy-link" class="cute-btn cute-btn-pill cute-btn-pink" type="button">Copy Link 📋</button>
+          </div>
+
+          <div class="share-actions">
+            <a id="btn-preview-link" href="#" target="_blank" class="cute-btn cute-btn-pill cute-btn-navy">Open Celebration Page 🚀</a>
+            <a id="btn-whatsapp-share" href="#" target="_blank" class="cute-btn cute-btn-pill cute-btn-whatsapp">Share on WhatsApp 💬</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Supabase CDN Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase config -->
+  <script src="supabase-client.js"></script>
+  <!-- Admin Script -->
+  <script src="admin.js"></script>
+</body>
+</html>

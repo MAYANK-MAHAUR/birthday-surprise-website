@@ -1,0 +1,103 @@
+@font-face {
+  font-family: 'Arimo';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./711f50b3a8c00bb7e2e05ef85f982cb6.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Arimo';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./0803f40e19a074a5520c2746a6ba3c95.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Arimo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./834f64ff415fb8f4f5d92d8fd40507e9.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Arimo';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./b07201e0e9fc452103c1c0345b0e7c1d.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Canva Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./6f33b662dba0705347f24c030f2a9c18.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Canva Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./8461fcb69f64bc53c83df66f88d997e5.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'JA Jayagiri Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./2c611869a00f665d75f9cdcd6394766c.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'League Spartan';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./17bf2c0289a0315c35428e4164035c41.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Anaktoria';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./33d90539d957dc6c818b286cb33e652e.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Railey';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./533193247616ed92929e68a2bab40268.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pony Club';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./8d6ef9e0bb259abad4551072fb13083e.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lazydog';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./b5d2bdef1c502ec9b561af7b792bf388.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Crafty Girls';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./dec8bd7227e631bd8a456eefd5317a57.woff') format('woff');
+}

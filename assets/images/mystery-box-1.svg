@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <filter id="shadow1" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#554477" flood-opacity="0.25"/>
+    </filter>
+    <linearGradient id="boxGrad1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9d8df1"/>
+      <stop offset="100%" stop-color="#735ce6"/>
+    </linearGradient>
+    <linearGradient id="lidGrad1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b6a8ff"/>
+      <stop offset="100%" stop-color="#8d79f7"/>
+    </linearGradient>
+    <linearGradient id="ribbon1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe259"/>
+      <stop offset="100%" stop-color="#ffa751"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#shadow1)">
+    <!-- Box Body -->
+    <rect x="25" y="52" width="70" height="52" rx="8" fill="url(#boxGrad1)"/>
+    <!-- Box Vertical Ribbon -->
+    <rect x="53" y="52" width="14" height="52" fill="url(#ribbon1)"/>
+    <!-- Lid -->
+    <rect x="20" y="40" width="80" height="18" rx="5" fill="url(#lidGrad1)"/>
+    <!-- Lid Ribbon -->
+    <rect x="53" y="40" width="14" height="18" fill="url(#ribbon1)"/>
+    <!-- Bow Loops -->
+    <path d="M46 38 C32 20, 52 14, 57 36 Z" fill="url(#ribbon1)"/>
+    <path d="M74 38 C88 20, 68 14, 63 36 Z" fill="url(#ribbon1)"/>
+    <!-- Bow Knot -->
+    <circle cx="60" cy="38" r="7" fill="#ff9933"/>
+    <!-- Mystery Question Mark Badge -->
+    <circle cx="60" cy="78" r="16" fill="#ffffff" opacity="0.95"/>
+    <text x="60" y="85" font-family="'Comic Sans MS', 'Fredoka One', 'Canva Sans', sans-serif" font-size="20" font-weight="bold" fill="#735ce6" text-anchor="middle">?</text>
+    <!-- Sparkles -->
+    <path d="M22 28 Q26 28 26 24 Q26 28 30 28 Q26 28 26 32 Q26 28 22 28 Z" fill="#ffd700"/>
+    <path d="M96 32 Q99 32 99 29 Q99 32 102 32 Q99 32 99 35 Q99 32 96 32 Z" fill="#ffd700"/>
+  </g>
+</svg>
